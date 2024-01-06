@@ -8,6 +8,9 @@ const bodyParser = require('body-parser')
 const PORT = 3001;
 app.use(bodyParser.json());
 
+var cors = require('cors');
+app.use(cors());
+
 mongoose.connect('mongodb+srv://shiran:FBbzAro4KQOKyO2L@cluster0.djzafbx.mongodb.net/articleData')
   .then(() => {
     console.log("Successfully Connected to the MongoDB Database");
@@ -15,6 +18,7 @@ mongoose.connect('mongodb+srv://shiran:FBbzAro4KQOKyO2L@cluster0.djzafbx.mongodb
   .catch(error => {
     console.log("MongoDB connection error", error);
   });
+
 
 app.use('/api/user', UserRoute); //http://localhost:3001/api/user
 app.use('/api/contactMessage', ContactMessageRoute);
