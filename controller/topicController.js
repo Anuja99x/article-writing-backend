@@ -1,4 +1,3 @@
-
 const Topic = require('../model/topicSchema');
 
 const saveTopic = (req, res) => {
@@ -10,7 +9,6 @@ const saveTopic = (req, res) => {
         description,
         topicDomain,
         // Add other fields as needed
-       
     });
 
     topicData.save()
@@ -35,14 +33,20 @@ const updateTopic = (req, res) => {
 };
 
 const getAllTopics = (req, res) => {
-    Topic.find()
+    const searchWord = req.query.searchWord;
+    const query = searchWord ? { title: { $regex: new RegExp(searchWord, 'i') } } : {};
+
+    Topic.find(query)
         .then(result => {
             res.status(200).json(result);
         })
         .catch(error => {
+            console.error('Error in getAllTopics:', error);
             res.status(500).json(error);
         });
 };
+
+
 
 const getOneTopic = (req, res) => {
     Topic.findOne({ topicId: req.params.id })
@@ -54,9 +58,23 @@ const getOneTopic = (req, res) => {
         });
 };
 
+const getTopicsByDomain = (req, res) => {
+    const domainName = req.params.domainName;
+
+    Topic.find({ topicDomain: domainName })
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(error => {
+            console.error('Error in getTopicsByDomain:', error);
+            res.status(500).json(error);
+        });
+};
+
 module.exports = {
     saveTopic,
     updateTopic,
     getAllTopics,
-    getOneTopic
+    getOneTopic,
+    getTopicsByDomain
 };
