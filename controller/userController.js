@@ -20,7 +20,7 @@ const saveUser = (req, resp, next) => {
                         email: userDto.email,
                         type: userDto.type
                     },
-                    "jwt_secret_ket",
+                    "jwt_secret_key",
                     { expiresIn: "1h" }
                 );
             } catch (err) {
@@ -62,10 +62,10 @@ const loginUser = (req, resp, next) => {
                                     email: existingUser.email,
                                     type: existingUser.type
                                 },
-                                "jwt_secret_ket",
+                                "jwt_secret_key",
                                 { expiresIn: "1h" }
                             );
-                        }catch (err) {//token erro
+                        }catch (err) {//token error
                             console.log(err);
                             const error =
                                 new Error("Error! Something went wrong.");
