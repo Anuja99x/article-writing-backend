@@ -1,3 +1,4 @@
+const verifytoken = require('../middleware/auth-middleware');
 const ContactMsg = require('../model/contactMessageSchema');
 
 
@@ -34,11 +35,14 @@ const updateMessage = (req, resp) => {
 }
 
 const getAllMessages = (req, res) => {
-    ContactMsg.find().then(result => {
-        res.status(200).json(result);
-    }).catch(err => {
-        res.status(500).json(err);
-    });
+    let next = verifytoken(req, res);
+    if(next){
+        ContactMsg.find().then(result => {
+            res.status(200).json(result);
+        }).catch(err => {
+            res.status(500).json(err);
+        });
+    }
 }
 
 const getOneMessage = (req, res) => {
