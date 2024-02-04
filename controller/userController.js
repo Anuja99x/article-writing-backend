@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const saveUser = (req, resp, next) => {
+
     bcrypt.hash(req.body.password, 10).then(hash => {
         const userDto = new User({
             userId: req.body.userId,
@@ -11,102 +12,117 @@ const saveUser = (req, resp, next) => {
             type: req.body.type,
             password: hash,
         });
-        userDto.save().then(result => {
-            let token;
-            try {
-                token = jwt.sign(
-                    {
-                        userId: userDto.userId,
-                        email: userDto.email,
-                        type: userDto.type
-                    },
-                    "jwt_secret_key",
-                    { expiresIn: "1h" }
-                );
-            } catch (err) {
-                const error =
-                    new Error("Error! Something went wrong.", err);
-                return next(error);
+
+        let userexists = false
+        User.find({ email: req.body.email, name: req.body.name }).then(result => {
+            console.log(result);
+            if (result.length > 0) {
+                const error = new Error("User already exist");
+                resp.status(409).json(error);
+                userexists = true;
             }
-            resp
-                .status(201)
-                .json({
-                    success: true,
-                    data: {
-                        userId: userDto.userId,
-                        email: userDto.email,
-                        type: userDto.type,
-                        token: token
-                    },
+            if (!userexists) {
+                userDto.save().then(result => {
+                    let token;
+                    try {
+                        token = jwt.sign(
+                            {
+                                userId: userDto.userId,
+                                username: userDto.name,
+                                email: userDto.email,
+                                type: userDto.type
+                            },
+                            "jwt_secret_key",
+                            { expiresIn: "1h" }
+                        );
+                    } catch (err) {
+                        const error =
+                            new Error("Error! Something went wrong.", err);
+                        return next(error);
+                    }
+                    resp
+                        .status(201)
+                        .json({
+                            success: true,
+                            data: {
+                                userId: userDto.userId,
+                                username: userDto.name,
+                                email: userDto.email,
+                                type: userDto.type,
+                                token: token
+                            },
+                        });
+                }).catch(error => {
+                    resp.status(500).json(error);
                 });
+            }
+
         }).catch(error => {
             resp.status(500).json(error);
         });
+
+        
     });
 
 }
 
 const loginUser = (req, resp, next) => {
-    let { email, password } = req.body;
+    let { username, email, password } = req.body;
 
-    try {
-            User.findOne({ email: email }).then(existingUser => {
-                bcrypt.compare(password, existingUser.password).then(result => {
-                    if(result){
-                        let token;
-                        try {
-                            //Creating jwt token
-                            token = jwt.sign(
-                                {
-                                    userId: existingUser.id,
-                                    email: existingUser.email,
-                                    type: existingUser.type
-                                },
-                                "jwt_secret_key",
-                                { expiresIn: "1h" }
-                            );
-                        }catch (err) {//token error
-                            console.log(err);
-                            const error =
-                                new Error("Error! Something went wrong.");
-                            return next(error);
-                        }
-                        resp
-                    .status(200)
-                    .json({
-                        success: true,
-                        data: {
-                            userId: existingUser.id,
-                            email: existingUser.email,
-                            type: existingUser.type,
-                            token: token,
-                        },
-                    });
-                    }else{
-                        const error =  //password error
+        User.findOne({ name: username, email: email }).then(existingUser => {
+            if (existingUser) {
+            bcrypt.compare(password, existingUser.password).then(result => {
+                if (result) {
+                    let token;
+                    try {
+                        //Creating jwt token
+                        token = jwt.sign(
+                            {
+                                userId: existingUser.id,
+                                username: existingUser.name,
+                                email: existingUser.email,
+                                type: existingUser.type
+                            },
+                            "jwt_secret_key",
+                            { expiresIn: "1h" }
+                        );
+                    } catch (err) {//token error
+                        console.log(err);
+                        const error =
+                            new Error("Error! Something went wrong.");
+                        return next(error);
+                    }
+                    resp
+                        .status(200)
+                        .json({
+                            success: true,
+                            data: {
+                                userId: existingUser.id,
+                                username: existingUser.name,
+                                email: existingUser.email,
+                                type: existingUser.type,
+                                token: token,
+                            },
+                        });
+                } else {
+                    const error =  //password error
                         Error(
                             "Wrong details please check at once"
                         );
                     return next(error);
-                    }
+                }
 
-                }).catch(err => { //bcrypt error
-                    const error =
+            }).catch(err => { //bcrypt error
+                const error =
                     Error(
                         "Wrong details please check at once"
                     );
                 return next(error);
-                });
-                
             });
-    } catch {
-        const error = //findone error
-            new Error(
-                "Error! Something went wrong."
-            );
-        return next(error);
-    }
-
+        }else{
+            resp.status(404).json({message:"User not found"});
+        }
+        });
     
 }
 
@@ -115,7 +131,7 @@ const loginUser = (req, resp, next) => {
 
 
 const updateUser = (req, res) => { }
-const getAllUsers = (req, res) => { 
+const getAllUsers = (req, res) => {
     User.find().then(result => {
         res.status(200).json(result);
     }).catch(error => {
