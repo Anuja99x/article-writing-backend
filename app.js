@@ -3,7 +3,12 @@ const mongoose = require("mongoose");
 const app = express();
 const UserRoute = require('./route/userRoute');
 const ContactMessageRoute = require('./route/contactMessageRoute');
-const TopicRoute = require('./route/topicRoute');
+
+const topicDomainRoute = require('./route/topicDomainRoute');
+const topicRoutes = require('./route/topicRoute');
+const keywordRoutes = require('./route/keywordRoute');
+
+
 const bodyParser = require('body-parser')
 
 const PORT = 3001;
@@ -23,7 +28,11 @@ mongoose.connect('mongodb+srv://shiran:FBbzAro4KQOKyO2L@cluster0.djzafbx.mongodb
 
 app.use('/api/user', UserRoute); //http://localhost:3001/api/user
 app.use('/api/contactMessage', ContactMessageRoute);
-app.use('/api/topics', TopicRoute);  
+
+app.use('/api/topicDomains', topicDomainRoute);
+
+app.use('/api/topics', topicRoutes);
+app.use('/api/keywords', keywordRoutes);
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
