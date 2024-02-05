@@ -1,4 +1,4 @@
-
+/*
 const express = require('express');
 const TopicController = require('../controller/topicController');
 
@@ -14,5 +14,15 @@ router.get('/search', TopicController.getAllTopics);
 router.get('/get/:id', TopicController.getOneTopic);
 
 router.get('/domain/:domainName', TopicController.getTopicsByDomain);
+
+module.exports = router;
+*/
+
+const express = require('express');
+const topicController = require('../controller/topicController');
+const router = express.Router();
+
+
+router.post('/addTopic', topicController.createTopic);
 
 module.exports = router;
