@@ -1,21 +1,33 @@
 const jwt = require('jsonwebtoken');
 
-const  verifyToken = async (req, res) => {
-    const token = req.header('Authorization').split(' ')[1];
-    //console.log(token);
-
-    if (!token) {
-        return res.status(401).json({ message: 'No token provided' });
+const verifyToken = async (req, res) => {
+    let token, isTokenProvided = false;
+    try {
+        token = await req.header('Authorization').split(' ')[1];
+        isTokenProvided = true;
+    } catch (error) {
+        res.status(401).json({
+            message: 'No token provided!'
+        });
+        return false;
     }
 
-    jwt.verify(token, 'jwt_secret_key', (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ message: 'Failed to authenticate token' });
-        }
 
-        // Token is valid, you can access the decoded data here
-        return true
-    });
+    if (isTokenProvided) {
+        let error;
+        jwt.verify(token, 'jwt_secret_key', (err, decoded) => {
+            error = err;
+        });
+        if (error) {
+            res.status(401).json({
+                message: 'Unauthorized access'
+            });
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 };
 
 module.exports = verifyToken;

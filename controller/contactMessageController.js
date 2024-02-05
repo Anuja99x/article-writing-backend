@@ -35,14 +35,15 @@ const updateMessage = (req, resp) => {
 }
 
 const getAllMessages = (req, res) => {
-    let next = verifytoken(req, res);
-    if(next){
+    verifytoken(req, res).then(result => {
+        if(result){
         ContactMsg.find().then(result => {
             res.status(200).json(result);
         }).catch(err => {
             res.status(500).json(err);
         });
     }
+    });
 }
 
 const getOneMessage = (req, res) => {
@@ -54,11 +55,16 @@ const getOneMessage = (req, res) => {
 }
 
 const getNotRepliedMessageCount = (req, res) => {
-    ContactMsg.countDocuments({replied:false}).then(result => {
-        res.status(200).json(result);
-    }).catch(err => {
-        res.status(500).json(err);
+    verifytoken(req, res).then(result => {
+        if(result){
+            ContactMsg.countDocuments({replied:false}).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json(err);
+            });
+        }
     });
+
 }
 
 module.exports = {
