@@ -30,42 +30,55 @@ const getTopicDomains = async (req, res) => {
     }
 };
 
-// Export the controller functions
-module.exports = {
-    createTopicDomain,
-    getTopicDomains
-};
-/*
-
-const TopicDomain = require('../model/topicDomainSchema');
-
-
-
-// Controller function to create a new topic domain
-const createTopicDomain = async (req, res) => {
+const deleteTopicDomain = async (req, res) => {
     try {
-        // Extract topic domain data from request body
-        const { topicDomainName, description } = req.body;
+        // Extract topic domain ID from request parameters
+        const { topicDomainId } = req.params;
 
-        // Create a new topic domain instance
-        const topicDomain = new TopicDomain({
-            topicDomainName,
-            description
-        });
+        // Find the topic domain by ID and delete it
+        const result = await TopicDomain.deleteOne({ topicDomainId });
 
-        // Save the topic domain to the database
-        await topicDomain.save();
-
-        // Respond with the created topic domain object including its UUID
-        res.status(201).json({
-            topicDomainId: topicDomain.topicDomainId,
-            topicDomainName: topicDomain.topicDomainName,
-            description: topicDomain.description
-        });
+        if (result.deletedCount === 1) {
+            res.status(200).json({ message: 'Topic domain deleted successfully' });
+        } else {
+            res.status(404).json({ error: 'Topic domain not found' });
+        }
     } catch (error) {
         // Handle errors and send error response
-        res.status(500).json({ error: error.message  });
+        res.status(500).json({ error: error.message });
     }
 };
 
-*/
+const editTopicDomain = async (req, res) => {
+    try {
+        // Extract topic domain ID and updated data from request body
+        const { topicDomainId } = req.params;
+        const { topicDomainName, description } = req.body;
+
+        // Find the topic domain by ID and update it with the new data
+        const result = await TopicDomain.findOneAndUpdate(
+            { topicDomainId },
+            { topicDomainName, description },
+            { new: true } // Return the updated document
+        );
+
+        if (result) {
+            res.status(200).json({ message: 'Topic domain updated successfully', updatedTopicDomain: result });
+        } else {
+            res.status(404).json({ error: 'Topic domain not found' });
+        }
+    } catch (error) {
+        // Handle errors and send error response
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
+// Export the controller functions
+module.exports = {
+    createTopicDomain,
+    getTopicDomains,
+    deleteTopicDomain,
+    editTopicDomain
+};
