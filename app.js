@@ -8,6 +8,8 @@ const topicDomainRoute = require('./route/topicDomainRoute');
 const topicRoutes = require('./route/topicRoute');
 const keywordRoutes = require('./route/keywordRoute');
 
+const dotenv = require('dotenv');
+dotenv.config();
 
 const bodyParser = require('body-parser')
 
@@ -17,7 +19,7 @@ app.use(bodyParser.json());
 var cors = require('cors');
 app.use(cors());
 
-mongoose.connect('mongodb+srv://shiran:FBbzAro4KQOKyO2L@cluster0.djzafbx.mongodb.net/articleData')
+mongoose.connect(process.env.URI)
   .then(() => {
     console.log("Successfully Connected to the MongoDB Database");
   })
