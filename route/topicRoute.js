@@ -24,5 +24,6 @@ const router = express.Router();
 
 
 router.post('/addTopic', topicController.createTopic);
+router.get('/count', topicController.getTopicCount);
 
 module.exports = router;
