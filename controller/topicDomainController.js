@@ -1,9 +1,11 @@
 const TopicDomain = require('../model/topicDomainSchema');
 
+const { v4: uuidv4 } = require('uuid');
+
 const createTopicDomain = async (req, res) => {
     try {
-        const count = await TopicDomain.countDocuments();
-        const topicDomainId = `topicDomain-${count + 1}`;
+        const uuid = uuidv4(); // Generate a UUID using uuid
+        const topicDomainId = `topicDomain-${uuid}`; // Concatenate the prefix with the UUID
 
         const { topicDomainName, description } = req.body;
         const topicDomain = new TopicDomain({ topicDomainId, topicDomainName, description });
@@ -15,6 +17,7 @@ const createTopicDomain = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 
 const getTopicDomains = async (req, res) => {
@@ -29,6 +32,20 @@ const getTopicDomains = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+const getTopicDomainCount = async (req, res) => {
+    try {
+        // Count the number of topic domains in the database
+        const topicDomainCount = await TopicDomain.countDocuments();
+
+        // Respond with the count of topic domains
+        res.status(200).json({ count: topicDomainCount });
+    } catch (error) {
+        // Handle errors and send error response
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 const deleteTopicDomain = async (req, res) => {
     try {
@@ -75,10 +92,12 @@ const editTopicDomain = async (req, res) => {
 
 
 
+
 // Export the controller functions
 module.exports = {
     createTopicDomain,
     getTopicDomains,
     deleteTopicDomain,
-    editTopicDomain
+    editTopicDomain,
+    getTopicDomainCount
 };
