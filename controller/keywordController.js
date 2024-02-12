@@ -14,7 +14,18 @@ const createKeyword = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+const getKeywords = async (req, res) => {
+    try {
+        // Retrieve all topic domains from the database
+        const keywords = await Keyword.find();
 
+        // Respond with the retrieved topic domains
+        res.status(200).json(keywords);
+    } catch (error) {
+        // Handle errors and send error response
+        res.status(500).json({ error: error.message });
+    }
+};
 const getKeywordCount = async (req, res) => {
     try {
         // Count the number of topic domains in the database
@@ -64,6 +75,51 @@ const deleteKeyword = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+const deleteKeywordByKeyword = async (req, res) => {
+    try {
+        // Extract keyword ID from request parameters
+        const { keywordId } = req.params;
+
+        // Find and delete the keyword by its ID
+        const result = await Keyword.deleteOne({ keywordId });
+
+        // Check if any keyword was deleted
+        if (result.deletedCount === 1) {
+            res.status(200).json({ message: 'Keyword deleted successfully' });
+        } else {
+            res.status(404).json({ error: 'No keyword found with the specified ID' });
+        }
+    } catch (error) {
+        // Handle errors and send error response
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+const editKeyword = async (req, res) => {
+    try {
+        // Extract topic domain ID and updated data from request body
+        const {keywordId } = req.params;
+        const { topicDomainId, keywordName, description } = req.body;
+
+        // Find the topic domain by ID and update it with the new data
+        const result = await Keyword.findOneAndUpdate(
+            { keywordId },
+            { topicDomainId, keywordName, description },
+            { new: true } // Return the updated document
+        );
+
+        if (result) {
+            res.status(200).json({ message: 'Keyword updated successfully', updatedTopicDomain: result });
+        } else {
+            res.status(404).json({ error: 'Keyword  domain not found' });
+        }
+    } catch (error) {
+        // Handle errors and send error response
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 
 
@@ -72,5 +128,8 @@ module.exports = {
     createKeyword,
     getKeywordCount,
     getKeywordsByTopicDomainId,
-    deleteKeyword 
+    deleteKeyword,
+    deleteKeywordByKeyword,
+    editKeyword,
+    getKeywords
 };
