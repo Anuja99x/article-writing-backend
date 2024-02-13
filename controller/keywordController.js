@@ -98,11 +98,11 @@ const deleteKeywordByKeyword = async (req, res) => {
 
 const editKeyword = async (req, res) => {
     try {
-        // Extract topic domain ID and updated data from request body
+        // Extract keyword ID and updated data from request body
         const {keywordId } = req.params;
         const { topicDomainId, keywordName, description } = req.body;
 
-        // Find the topic domain by ID and update it with the new data
+        // Find the  keyword by ID and update it with the new data
         const result = await Keyword.findOneAndUpdate(
             { keywordId },
             { topicDomainId, keywordName, description },
@@ -112,7 +112,7 @@ const editKeyword = async (req, res) => {
         if (result) {
             res.status(200).json({ message: 'Keyword updated successfully', updatedTopicDomain: result });
         } else {
-            res.status(404).json({ error: 'Keyword  domain not found' });
+            res.status(404).json({ error: 'Keyword not found' });
         }
     } catch (error) {
         // Handle errors and send error response

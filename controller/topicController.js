@@ -14,6 +14,19 @@ const createTopic = async (req, res) => {
     }
 };
 
+const getAllTopics = async (req, res) => {
+    try {
+        // Retrieve all topic domains from the database
+        const topics = await Topic.find();
+
+        // Respond with the retrieved topic domains
+        res.status(200).json(topics);
+    } catch (error) {
+        // Handle errors and send error response
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 const getTopicCount = async (req, res) => {
     try {
@@ -85,11 +98,38 @@ const deleteTopicByTopics = async (req, res) => {
     }
 };
 
+const editTopic = async (req, res) => {
+    try {
+        // Extract topic ID and updated data from request body
+        const {topicId } = req.params;
+        const { topicDomainId, keywordId, topicName, description } = req.body;
+
+        // Find the topic  by ID and update it with the new data
+        const result = await Topic.findOneAndUpdate(
+            { topicId },
+            { topicDomainId, keywordId, topicName, description },
+            { new: true } // Return the updated document
+        );
+
+        if (result) {
+            res.status(200).json({ message: 'Topic updated successfully', updatedTopicDomain: result });
+        } else {
+            res.status(404).json({ error: 'Topic  not found' });
+        }
+    } catch (error) {
+        // Handle errors and send error response
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 module.exports = {
     createTopic,
     getTopicCount,
     getTopicsByTopicDomainId,
     deleteTopicsByTopicDomain,
-    deleteTopicByTopics
+    deleteTopicByTopics,
+    getAllTopics,
+    editTopic
     
 };
