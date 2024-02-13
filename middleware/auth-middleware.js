@@ -20,7 +20,7 @@ const verifyToken = async (req, res) => {
         });
         if (error) {
             res.status(401).json({
-                message: 'Unauthorized access'
+                message: error.message
             });
             return false;
         } else {
