@@ -24,5 +24,10 @@ const router = express.Router();
 
 
 router.post('/addTopic', topicController.createTopic);
-
+router.get('/get', topicController.getAllTopics);
+router.get('/count', topicController.getTopicCount);
+router.get('/:topicDomainId', topicController.getTopicsByTopicDomainId);
+router.patch('/edit/:topicId', topicController.editTopic);
+router.delete('/:topicDomainId', topicController.deleteTopicsByTopicDomain);
+router.delete('/delete/:topicId', topicController.deleteTopicByTopics);
 module.exports = router;
