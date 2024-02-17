@@ -14,10 +14,9 @@ const saveUser = (req, resp, next) => {
         });
 
         let userexists = false
-        User.find({ email: req.body.email, name: req.body.name }).then(result => {
-            console.log(result);
+        User.find({ email: req.body.email, name:req.body.name }).then(result => {
             if (result.length > 0) {
-                const error = new Error("User already exist");
+                const error = new Error("UserName & email already exist");
                 resp.status(409).json(error);
                 userexists = true;
             }
@@ -138,12 +137,33 @@ const getAllUsers = (req, res) => {
         res.status(500).json(error);
     });
 }
+
 const getOneUser = (req, res) => { }
+
+const getUserCount = (req, res) => { 
+    let readerCount = 0,writerCount = 0;
+    User.countDocuments({type:"Reader"}).then(readerResult => {
+        readerCount = readerResult;
+        User.countDocuments({type:"Writer"}).then(writerResult => {
+            writerCount = writerResult;
+            res.status(200).json([
+                readerCount,
+                writerCount
+            ]);
+        }).catch(err => {   
+            res.status(500).json(err);
+        });
+    }).catch(err => {   
+        res.status(500).json(err);
+    });
+    
+}
 
 module.exports = {
     saveUser,
     loginUser,
     updateUser,
     getAllUsers,
-    getOneUser
+    getOneUser,
+    getUserCount
 }
