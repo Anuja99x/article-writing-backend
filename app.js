@@ -7,6 +7,7 @@ const ContactMessageRoute = require('./route/contactMessageRoute');
 const topicDomainRoute = require('./route/topicDomainRoute');
 const topicRoutes = require('./route/topicRoute');
 const keywordRoutes = require('./route/keywordRoute');
+const readerArticle = require('./route/readerArticleRoute');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -35,6 +36,7 @@ app.use('/api/topicDomains', topicDomainRoute);
 
 app.use('/api/topics', topicRoutes);
 app.use('/api/keywords', keywordRoutes);
+app.use('/api/readerArticle', readerArticle);
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
