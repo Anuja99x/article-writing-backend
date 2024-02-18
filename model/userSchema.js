@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true },
     name: { type: String, required: true },
     type: { type: String, required: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    savedAt: { type: Date, default: Date.now() }
     // Add any other fields as needed
    
 }, { collection: 'userData' });
