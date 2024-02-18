@@ -30,4 +30,5 @@ router.get('/:topicDomainId', topicController.getTopicsByTopicDomainId);
 router.patch('/edit/:topicId', topicController.editTopic);
 router.delete('/:topicDomainId', topicController.deleteTopicsByTopicDomain);
 router.delete('/delete/:topicId', topicController.deleteTopicByTopics);
+router.get('/get/:topicDomainId/:keywordId', topicController.getTopicsByDomainAndKeyword);
 module.exports = router;

@@ -122,6 +122,25 @@ const editTopic = async (req, res) => {
     }
 };
 
+// Function to get topics by topic domain ID and keyword ID
+const getTopicsByDomainAndKeyword = async (req, res) => {
+    try {
+        const { topicDomainId, keywordId } = req.params; // Extract topic domain ID and keyword ID from request parameters
+  
+        // Query the database to find topics by topic domain ID and keyword ID
+        const topics = await Topic.find({ topicDomainId, keywordId });
+  
+        // Respond with the fetched topics
+        res.status(200).json(topics);
+    } catch (error) {
+        // Handle errors and send error response
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
 
 
 module.exports = {
@@ -131,6 +150,7 @@ module.exports = {
     deleteTopicsByTopicDomain,
     deleteTopicByTopics,
     getAllTopics,
-    editTopic
+    editTopic,
+    getTopicsByDomainAndKeyword 
     
 };
