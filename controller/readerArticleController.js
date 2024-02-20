@@ -59,11 +59,9 @@ const getAllReaderArticle=(req,resp)=>{
 const searchReaderArticle=(req,resp)=>{
     ReaderArticle.find({
         $or: [
-            {id:{$regex:req.headers.text, $options:'i' }},
+            {content:{$regex:req.headers.text, $options:'i' }},
             {title:{$regex:req.headers.text, $options:'i' }},
-            {date:{$regex:req.headers.text, $options:'i' }},
-            {time:{$regex:req.headers.text, $options:'i' }},
-            {writer:{$regex:req.headers.text, $options:'i' }}
+            {writer:{$regex:req.headers.text, $options:'i' }},
         ]
     }).then(result=>{
         resp.status(200).json(result);
