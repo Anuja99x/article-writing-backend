@@ -176,6 +176,24 @@ const getUserCount = (req, res) => {
     
 }
 
+const getUsersByUserName = (req, res) => {
+    let { type,username } = req.params;
+    if(username === " "){
+        User.find({type:type}).then(result => {
+            res.status(200).json(result);
+        }).catch(error => {
+            res.status(500).json(error);
+        });
+    }else{
+        User.find({name: {"$regex": "^"+username+"", "$options": "i"}}).then(result => {
+            result = result.filter(user => user.type === type);
+            res.status(200).json(result);
+        }).catch(error => {
+            res.status(500).json(error);
+        });
+    }
+ }
+
 module.exports = {
     saveUser,
     loginUser,
@@ -184,5 +202,6 @@ module.exports = {
     getOneUser,
     getUserCount,
     getAllWriters,
-    getAllReaders
+    getAllReaders,
+    getUsersByUserName,
 }
