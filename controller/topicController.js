@@ -57,6 +57,22 @@ const getTopicsByTopicDomainId = async (req, res) => {
     }
 };
 
+const getTopicsByKeyword = async (req, res) => {
+    try {
+      const { keywordId } = req.params; // Change req.query to req.params
+  
+      // Query the database to find keywords by topic domain ID
+      const topics = await Topic.find({  keywordId });
+  
+      // Respond with the fetched keywords
+      res.status(200).json(topics);
+    } catch (error) {
+      // Handle errors and send error response
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 
 const deleteTopicsByTopicDomain = async (req, res) => {
     try {
@@ -151,6 +167,7 @@ module.exports = {
     deleteTopicByTopics,
     getAllTopics,
     editTopic,
-    getTopicsByDomainAndKeyword 
+    getTopicsByDomainAndKeyword,
+    getTopicsByKeyword
     
 };
