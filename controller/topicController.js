@@ -57,6 +57,8 @@ const getTopicsByTopicDomainId = async (req, res) => {
     }
 };
 
+
+
 const getTopicsByKeyword = async (req, res) => {
     try {
       const { keywordId } = req.params; // Change req.query to req.params
@@ -70,6 +72,23 @@ const getTopicsByKeyword = async (req, res) => {
       // Handle errors and send error response
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+const getTopicDetails = async (req, res) => {
+    try {
+        const { topicId } = req.params;
+        // Find the topic by its ID
+        const topic = await Topic.findOne({ topicId });
+        if (!topic) {
+            return res.status(404).json({ error: 'Topic not found' });
+        }
+        // Extract topic domain ID and keyword ID from the topic
+        const { topicDomainId, keywordId } = topic;
+        // Respond with the topic domain ID and keyword ID
+        res.status(200).json({ topicDomainId, keywordId });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -168,6 +187,7 @@ module.exports = {
     getAllTopics,
     editTopic,
     getTopicsByDomainAndKeyword,
-    getTopicsByKeyword
+    getTopicsByKeyword,
+    getTopicDetails
     
 };
