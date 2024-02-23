@@ -7,8 +7,14 @@ const ReaderArticleSchema = new mongoose.Schema({
    profilePic:{type: String, require: true},
    writer:{type: String, require: true},
    date:{type: Date, require: true,default: Date.now()},
-   time:{type: String, require: true}
+   time:{type: String, require: true},
+   likes:{type: Number, require: true}
 },{ collection: 'articleData' });
+
+ReaderArticleSchema.virtual('formattedDateTime').get(function () {
+   const formattedDate = this.date.toISOString().split('T')[1];
+   return `${formattedDate} ${this.time}`;
+});
 
 module.exports = mongoose.model('articleData', ReaderArticleSchema);
 
