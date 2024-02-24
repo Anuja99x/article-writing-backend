@@ -10,6 +10,7 @@ const topicSchema = new mongoose.Schema({
 );
 
 // Middleware to generate unique topicId before saving
+/*
 topicSchema.pre('save', async function(next) {
     try {
         const count = await this.constructor.countDocuments();
@@ -19,5 +20,6 @@ topicSchema.pre('save', async function(next) {
         next(err);
     }
 });
+*/
 
 module.exports = mongoose.model('Topic', topicSchema);

@@ -1,10 +1,12 @@
 const FlaggedTopic = require('../model/flaggedTopicSchema');
-
+const { v4: uuidv4 } = require('uuid');
 // Controller function to save a flagged topic
 const saveFlaggedTopic = async (req, res) => {
     try {
+        
         const { topicId, topicName, flaggedBy, reason } = req.body;
-        const flaggedTopic = new FlaggedTopic({ topicId, topicName, flaggedBy, reason });
+        const flaggedTopicId = `flaggedTopic-${uuidv4()}`;
+        const flaggedTopic = new FlaggedTopic({ flaggedTopicId, topicId, topicName, flaggedBy, reason });
         await flaggedTopic.save();
         res.status(201).json(flaggedTopic);
 
@@ -13,7 +15,6 @@ const saveFlaggedTopic = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 
 
 

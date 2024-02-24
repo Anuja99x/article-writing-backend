@@ -69,6 +69,8 @@ const saveUser = (req, resp, next) => {
 const loginUser = (req, resp, next) => {
     let { username, email, password } = req.body;
 
+    
+
         User.findOne({ name: username, email: email }).then(existingUser => {
             if (existingUser) {
             bcrypt.compare(password, existingUser.password).then(result => {

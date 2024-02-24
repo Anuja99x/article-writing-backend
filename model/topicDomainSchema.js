@@ -8,17 +8,6 @@ const topicDomainSchema = new mongoose.Schema({
 } ,{ collection: 'topic_domains' }
 );
 
-// Middleware to generate unique topicDomainId before saving
-topicDomainSchema.pre('save', async function(next) {
-    try {
-        const count = await this.constructor.countDocuments();
-        this.topicDomainId = `topicDomain-${count + 1}`;
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
-
 
 
 module.exports = mongoose.model('TopicDomain', topicDomainSchema);

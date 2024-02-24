@@ -6,7 +6,7 @@ const createKeyword = async (req, res) => {
     try {
         const { topicDomainId, keywordName, description } = req.body;
         // Generate a UUIDv4 for keywordId
-        const keywordId = uuidv4();
+        const keywordId = `keyword-${uuidv4()}`;
         const keyword = new Keyword({ keywordId, topicDomainId, keywordName, description });
         await keyword.save();
         res.status(201).json(keyword);
