@@ -38,12 +38,13 @@ const getUniqueTopicIds = async (req, res) => {
                 $group: {
                     _id: "$topicId", // Group by topicId
                     topicName: { $first: "$topicName" }, 
+                    topicId:{ $first: "$topicId" }, 
                     count: { $sum: 1 }, // Count occurrences of each topicId
                     reasons: { $push: "$reason" } // Collect reasons for each topicId
                 }
             }
         ]);
-t
+
         res.status(200).json(uniqueTopics);
     } catch (error) {
         res.status(500).json({ error: error.message });
