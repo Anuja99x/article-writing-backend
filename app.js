@@ -9,6 +9,7 @@ const topicRoutes = require('./route/topicRoute');
 const keywordRoutes = require('./route/keywordRoute');
 const readerArticle = require('./route/readerArticleRoute');
 const comment = require('./route/commentRoute');
+const flaggedTopicRoute = require('./route/flaggedTopicRoute')
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -19,6 +20,7 @@ const PORT = 3001;
 app.use(bodyParser.json());
 
 var cors = require('cors');
+const flaggedTopicSchema = require("./model/flaggedTopicSchema");
 app.use(cors());
 
 mongoose.connect(process.env.URI)
@@ -39,6 +41,8 @@ app.use('/api/topics', topicRoutes);
 app.use('/api/keywords', keywordRoutes);
 app.use('/api/readerArticle', readerArticle);
 app.use('/api/comment', comment);
+
+app.use('/api/flaggedTopics', flaggedTopicRoute);
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

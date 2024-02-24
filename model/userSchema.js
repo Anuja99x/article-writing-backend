@@ -5,9 +5,9 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true },
     name: { type: String, required: true },
     type: { type: String, required: true },
-    password: { type: String, required: true }
-    // Add any other fields as needed
-   
+    password: { type: String, required: true },
+    savedAt: { type: Date, default: Date.now() },
+    isActive: { type: Boolean, default: true } 
 }, { collection: 'userData' });
 
 userSchema.index({ userId: 1 }, { unique: true });

@@ -58,6 +58,41 @@ const getTopicsByTopicDomainId = async (req, res) => {
 };
 
 
+
+const getTopicsByKeyword = async (req, res) => {
+    try {
+      const { keywordId } = req.params; // Change req.query to req.params
+  
+      // Query the database to find keywords by topic domain ID
+      const topics = await Topic.find({  keywordId });
+  
+      // Respond with the fetched keywords
+      res.status(200).json(topics);
+    } catch (error) {
+      // Handle errors and send error response
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+const getTopicDetails = async (req, res) => {
+    try {
+        const { topicId } = req.params;
+        // Find the topic by its ID
+        const topic = await Topic.findOne({ topicId });
+        if (!topic) {
+            return res.status(404).json({ error: 'Topic not found' });
+        }
+        // Extract topic domain ID and keyword ID from the topic
+        const { topicDomainId, keywordId } = topic;
+        // Respond with the topic domain ID and keyword ID
+        res.status(200).json({ topicDomainId, keywordId });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 const deleteTopicsByTopicDomain = async (req, res) => {
     try {
         // Extract topic domain ID from request parameters
@@ -122,6 +157,25 @@ const editTopic = async (req, res) => {
     }
 };
 
+// Function to get topics by topic domain ID and keyword ID
+const getTopicsByDomainAndKeyword = async (req, res) => {
+    try {
+        const { topicDomainId, keywordId } = req.params; // Extract topic domain ID and keyword ID from request parameters
+  
+        // Query the database to find topics by topic domain ID and keyword ID
+        const topics = await Topic.find({ topicDomainId, keywordId });
+  
+        // Respond with the fetched topics
+        res.status(200).json(topics);
+    } catch (error) {
+        // Handle errors and send error response
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
 
 
 module.exports = {
@@ -131,6 +185,9 @@ module.exports = {
     deleteTopicsByTopicDomain,
     deleteTopicByTopics,
     getAllTopics,
-    editTopic
+    editTopic,
+    getTopicsByDomainAndKeyword,
+    getTopicsByKeyword,
+    getTopicDetails
     
 };
