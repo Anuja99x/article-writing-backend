@@ -33,6 +33,23 @@ const getTopicDomains = async (req, res) => {
     }
 };
 
+const getTopicDomainsByTopicDomainId = async (req, res) => {
+    try {
+      const { topicDomainId } = req.params; // Change req.query to req.params
+  
+      // Query the database to find keywords by topic domain ID
+      const topicDomain = await TopicDomain.findOne({ topicDomainId: topicDomainId }, { topicDomainName: 1, _id: 0  });
+  
+      // Respond with the fetched keywords
+      res.status(200).json(topicDomain);
+    } catch (error) {
+      // Handle errors and send error response
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
 const getTopicDomainCount = async (req, res) => {
     try {
         // Count the number of topic domains in the database
@@ -99,5 +116,6 @@ module.exports = {
     getTopicDomains,
     deleteTopicDomain,
     editTopicDomain,
-    getTopicDomainCount
+    getTopicDomainCount,
+    getTopicDomainsByTopicDomainId
 };
