@@ -43,7 +43,7 @@ const getUniqueTopicIds = async (req, res) => {
                 }
             }
         ]);
-
+t
         res.status(200).json(uniqueTopics);
     } catch (error) {
         res.status(500).json({ error: error.message });
