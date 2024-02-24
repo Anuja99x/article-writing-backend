@@ -9,14 +9,6 @@ const keywordSchema = new mongoose.Schema({
 );
 
 // Middleware to generate unique keywordId before saving
-keywordSchema.pre('save', async function(next) {
-    try {
-        const count = await this.constructor.countDocuments();
-        this.keywordId = `keyword-${count + 1}`;
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
+
 
 module.exports = mongoose.model('Keyword', keywordSchema);
