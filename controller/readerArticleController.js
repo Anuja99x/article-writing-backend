@@ -9,7 +9,8 @@ const saveReaderArticle=(req,resp)=>{
        profilePic:req.body.profilePic,
        writer:req.body.writer,
        date: new Date(),
-       time:req.body.time
+       time:req.body.time,
+       likes:req.body.likes,
     });
     readerArticleDto.save().then(result=>{
         resp.status(201).json(result);
@@ -26,7 +27,8 @@ const updateReaderArticle=(req,resp)=>{
         profilePic:req.body.profilePic,
         writer:req.body.writer,
         date: new Date(),
-        time:req.body.time
+        time:req.body.time,
+        likes:req.body.likes,
     }).then(result=>{
         resp.status(201).json(result);
     }).catch(error=>{

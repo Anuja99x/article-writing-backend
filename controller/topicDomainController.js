@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const createTopicDomain = async (req, res) => {
     try {
-        const uuid = uuidv4(); // Generate a UUID using uuid
+        
         const topicDomainId = `topicDomain-${uuidv4()}`; // Concatenate the prefix with the UUID
 
         const { topicDomainName, description } = req.body;
