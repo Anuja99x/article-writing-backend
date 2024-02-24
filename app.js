@@ -8,6 +8,7 @@ const topicDomainRoute = require('./route/topicDomainRoute');
 const topicRoutes = require('./route/topicRoute');
 const keywordRoutes = require('./route/keywordRoute');
 const readerArticle = require('./route/readerArticleRoute');
+const comment = require('./route/commentRoute');
 const flaggedTopicRoute = require('./route/flaggedTopicRoute')
 
 const dotenv = require('dotenv');
@@ -39,6 +40,7 @@ app.use('/api/topicDomains', topicDomainRoute);
 app.use('/api/topics', topicRoutes);
 app.use('/api/keywords', keywordRoutes);
 app.use('/api/readerArticle', readerArticle);
+app.use('/api/comment', comment);
 
 app.use('/api/flaggedTopics', flaggedTopicRoute);
 
