@@ -51,6 +51,18 @@ const getUniqueTopicIds = async (req, res) => {
     }
 };
 
+const deleteFlaggedTopicsByTopicId = async (req, res) => {
+    try {
+        const { topicId } = req.params;
+        
+        // Delete flagged topics with the given topicId
+        await FlaggedTopic.deleteMany({ topicId });
+
+        res.status(200).json({ message: 'Flagged topics deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 
 
@@ -59,5 +71,6 @@ const getUniqueTopicIds = async (req, res) => {
 module.exports = {
     saveFlaggedTopic,
     getFlaggedTopicById,
-    getUniqueTopicIds
+    getUniqueTopicIds,
+    deleteFlaggedTopicsByTopicId
 };
