@@ -72,11 +72,36 @@ const searchReaderArticle=(req,resp)=>{
     });
 }
 
+const getArticleCountByDomain=(req,resp)=>{
+    const agg = [
+        {
+          '$group': {
+            '_id': '$domain', 
+            'count': {
+              '$sum': 1
+            }
+          }
+        }, {
+          '$project': {
+            'domain': '$_id', 
+            'count': 1, 
+            '_id': 0
+          }
+        }
+      ];
+        ReaderArticle.aggregate(agg).then(result=>{
+            resp.status(200).json(result);
+        }).catch(error=>{
+            resp.status(500).json(error);
+        });
+}
+
 module.exports= {
     saveReaderArticle,
     updateReaderArticle,
     deleteReaderArticle,
     getReaderArticle,
     getAllReaderArticle,
-    searchReaderArticle
+    searchReaderArticle,
+    getArticleCountByDomain
 }

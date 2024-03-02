@@ -17,5 +17,6 @@ router.get('/get', readerArticleController.getReaderArticle)
 router.delete('/delete', readerArticleController.deleteReaderArticle)
 router.get('/getAll', readerArticleController.getAllReaderArticle)
 router.get('/search', readerArticleController.searchReaderArticle)
+router.get('/count-by-domain', readerArticleController.getArticleCountByDomain)
 
 module.exports = router;
