@@ -7,7 +7,7 @@ const flaggedTopicController = require('../controller/flaggedTopicController');
 router.post('/add', flaggedTopicController.saveFlaggedTopic);
 // Route to get a flagged topic by its ID
 router.get('/get/:flaggedTopicId', flaggedTopicController.getFlaggedTopicById);
-
+router.delete('/delete/:topicId', flaggedTopicController.deleteFlaggedTopicsByTopicId);
 
 router.get('/get', flaggedTopicController.getUniqueTopicIds);
 module.exports = router;
