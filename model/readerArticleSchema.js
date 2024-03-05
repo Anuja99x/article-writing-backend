@@ -8,7 +8,8 @@ const ReaderArticleSchema = new mongoose.Schema({
    writer:{type: String, require: true},
    date:{type: Date, require: true,default: Date.now()},
    time:{type: String, require: true},
-   likes:{type: Number, require: true}
+   likes:{type: Number, require: true},
+   tags:{type: [String], require: true}
 },{ collection: 'articleData' });
 
 ReaderArticleSchema.virtual('formattedDateTime').get(function () {
