@@ -11,6 +11,7 @@ const saveReaderArticle=(req,resp)=>{
        date: new Date(),
        time:req.body.time,
        likes:req.body.likes,
+       tags:req.body.tags,
     });
     readerArticleDto.save().then(result=>{
         resp.status(201).json(result);
@@ -29,6 +30,7 @@ const updateReaderArticle=(req,resp)=>{
         date: new Date(),
         time:req.body.time,
         likes:req.body.likes,
+        tags:req.body.tags
     }).then(result=>{
         resp.status(201).json(result);
     }).catch(error=>{
@@ -64,6 +66,7 @@ const searchReaderArticle=(req,resp)=>{
             {content:{$regex:req.headers.text, $options:'i' }},
             {title:{$regex:req.headers.text, $options:'i' }},
             {writer:{$regex:req.headers.text, $options:'i' }},
+            {tags:{$regex:req.headers.text, $options:'i' }},
         ]
     }).then(result=>{
         resp.status(200).json(result);
