@@ -11,6 +11,7 @@ const readerArticle = require('./route/readerArticleRoute');
 const comment = require('./route/commentRoute');
 const flaggedTopicRoute = require('./route/flaggedTopicRoute')
 const article = require('./route/articleRoute')
+const fileRoutes = require('./route/fileRoutes')
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -45,6 +46,7 @@ app.use('/api/comment', comment);
 
 app.use('/api/flaggedTopics', flaggedTopicRoute);
 app.use('/api/article', article)
+app.use('/api/file', fileRoutes)
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
