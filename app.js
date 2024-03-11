@@ -12,6 +12,7 @@ const comment = require('./route/commentRoute');
 const flaggedTopicRoute = require('./route/flaggedTopicRoute')
 const article = require('./route/articleRoute')
 const fileRoutes = require('./route/fileRoutes')
+const userUtilRoute = require('./route/userUtilRoute')
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -35,6 +36,7 @@ mongoose.connect(process.env.URI)
 
 
 app.use('/api/user', UserRoute); //http://localhost:3001/api/user
+app.use ('/api/user-util', userUtilRoute);
 app.use('/api/contactMessage', ContactMessageRoute);
 
 app.use('/api/topicDomains', topicDomainRoute);
