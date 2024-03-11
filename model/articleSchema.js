@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 
 const ArticleSchema = new mongoose.Schema(
   {
-    id: {
+    articleId: {
       type: String,
-      unique: false,
+      unique: true,
+      required: true,
     },
     title: {
       type: String,
@@ -16,7 +17,6 @@ const ArticleSchema = new mongoose.Schema(
     },
     likes: {
       type: Number,
-      required: true,
       default: 0,
     },
     userId: {
@@ -26,17 +26,14 @@ const ArticleSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      require: true, // pending, approved, rejected
+      // pending, approved, rejected
       default: "pending",
     },
     savedType: {
       type: String, // draft, completed
-      require: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { collection: "article" }
 );
 
 module.exports = mongoose.model("Article", ArticleSchema);
