@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 
 const ArticleSchema = new mongoose.Schema(
   {
-    id: {
+    articleId: {
       type: String,
-      unique: false,
+      unique: true,
+      required: true,
     },
     title: {
       type: String,
@@ -16,7 +17,6 @@ const ArticleSchema = new mongoose.Schema(
     },
     likes: {
       type: Number,
-      required: true,
       default: 0,
     },
     userId: {
@@ -26,17 +26,39 @@ const ArticleSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      require: true, // pending, approved, rejected
+      // pending, approved, rejected
       default: "pending",
     },
     savedType: {
       type: String, // draft, completed
-      require: true,
+    },
+    coverImage: {
+      type: String,
+      default: "https://picsum.photos/500/300?random=1",
+    },
+    image1: {
+      type: String,
+      default: "https://picsum.photos/500/300?random=2",
+    },
+    image2: {
+      type: String,
+      default: "https://picsum.photos/500/300?random=3",
+    },
+    image3: {
+      type: String,
+      default: "https://picsum.photos/500/300?random=4",
+    },
+    image4: {
+      type: String,
+      default: "https://picsum.photos/500/300?random=5",
+    },
+    image5: {
+      type: String,
+      default: "https://picsum.photos/500/300?random=6",
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true },
+  { collection: "article" }
 );
 
 module.exports = mongoose.model("Article", ArticleSchema);
