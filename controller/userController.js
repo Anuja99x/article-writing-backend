@@ -128,10 +128,6 @@ const loginUser = (req, resp, next) => {
 
 }
 
-
-
-
-
 const updateUser = (req, res) => { 
     let { userId, name, email, type, imgUrl } = req.body
     User.findOneAndUpdate({ userId: userId }, { name: name, email: email, type: type, imgUrl: imgUrl }).then(result => {
@@ -159,7 +155,7 @@ const getAllUsers = (req, res) => {
     });
 }
 
-const getAllWriters = (req, res) => {
+const getAllWriters = (req,res) => {
     User.find({ type: "Writer" }).then(result => {
         res.status(200).json(result);
     }).catch(error => {

@@ -1,10 +1,10 @@
 const express = require('express');
-const fileController = require('../controller/fileUploadController');
+const adminImgController = require('../controller/adminImgUploadController');
 
 const router = express.Router();
 
-router.post('/upload',fileController.upload);
-router.post('/setUserId',fileController.setUserId);
+router.post('/upload',adminImgController.upload);
+router.post('/setUserId',adminImgController.setUserId);
 
 
 module.exports = router;
