@@ -41,6 +41,11 @@ exports.getArticlesByWriterId = async (req, res) => {
       "userId",
       "name email"
     );
+    if (!articles) {
+      return res
+        .status(404)
+        .json({ success: false, error: "No articles found for this writer" });
+    }
     res.status(200).json({ success: true, articles });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

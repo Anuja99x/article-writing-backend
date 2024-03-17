@@ -30,7 +30,7 @@ const ArticleSchema = new mongoose.Schema(
       default: "pending",
     },
     savedType: {
-      type: String, // draft, completed
+      type: String, // draft, saved, trashed, deleted
     },
     coverImage: {
       type: String,
