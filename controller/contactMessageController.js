@@ -1,4 +1,4 @@
-const verifytoken = require('../middleware/auth-middleware');
+const verifytoken = require('../middleware/auth');
 const ContactMsg = require('../model/contactMessageSchema');
 
 
@@ -55,16 +55,12 @@ const getOneMessage = (req, res) => {
 }
 
 const getNotRepliedMessageCount = (req, res) => {
-    verifytoken(req, res).then(result => {
-        if(result){
             ContactMsg.countDocuments({replied:false}).then(result => {
                 res.status(200).json(result);
             }).catch(err => {
                 res.status(500).json(err);
             });
-        }
-    });
-
+            ;
 }
 
 module.exports = {
