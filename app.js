@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const app = express();
 const UserRoute = require('./route/userRoute');
 const ContactMessageRoute = require('./route/contactMessageRoute');
-
 const topicDomainRoute = require('./route/topicDomainRoute');
 const topicRoutes = require('./route/topicRoute');
 const keywordRoutes = require('./route/keywordRoute');
@@ -13,6 +12,9 @@ const flaggedTopicRoute = require('./route/flaggedTopicRoute')
 const article = require('./route/articleRoute')
 const fileRoutes = require('./route/fileRoutes')
 const userUtilRoute = require('./route/userUtilRoute')
+const auth = require('./middleware/auth');
+const authRoutes = require('./route/authRoutes');
+
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -35,8 +37,9 @@ mongoose.connect(process.env.URI)
   });
 
 
+app.use('/api/auth', authRoutes);
 app.use('/api/user', UserRoute); //http://localhost:3001/api/user
-app.use ('/api/user-util', userUtilRoute);
+app.use ('/api/user-util', auth, userUtilRoute);
 app.use('/api/contactMessage', ContactMessageRoute);
 
 app.use('/api/topicDomains', topicDomainRoute);
