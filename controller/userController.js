@@ -12,6 +12,7 @@ const saveUser = (req, resp, next) => {
             type: req.body.type,
             password: hash,
             savedAt: Date.now(),
+            imgUrl:""
         });
 
         let userexists = false
@@ -78,7 +79,7 @@ const loginUser = (req, resp, next) => {
                         //Creating jwt token
                         token = jwt.sign(
                             {
-                                userId: existingUser.id,
+                                userId: existingUser.userId,
                                 username: existingUser.name,
                                 email: existingUser.email,
                                 type: existingUser.type
@@ -97,10 +98,11 @@ const loginUser = (req, resp, next) => {
                         .json({
                             success: true,
                             data: {
-                                userId: existingUser.id,
+                                userId: existingUser.userId,
                                 username: existingUser.name,
                                 email: existingUser.email,
                                 type: existingUser.type,
+                                imgUrl: existingUser.imgUrl,
                                 token: token,
                             },
                         });
@@ -126,11 +128,25 @@ const loginUser = (req, resp, next) => {
 
 }
 
+const updateUser = (req, res) => { 
+    let { userId, name, email, type, imgUrl } = req.body
+    User.findOneAndUpdate({ userId: userId }, { name: name, email: email, type: type, imgUrl: imgUrl }).then(result => {
+        res.status(200).json(result);
+    }).catch(error => {
+        res.status(500).json(error);
+    });
+}
 
+const updateUserImg= (userId, imgUrl) => {
+    User.findOneAndUpdate(
+        { userId: userId },
+        { imgUrl: imgUrl }).then(result => {
+        return result;
+    }).catch(error => {
+        return error;
+    });
+}
 
-
-
-const updateUser = (req, res) => { }
 const getAllUsers = (req, res) => {
     User.find().then(result => {
         res.status(200).json(result);
@@ -139,7 +155,7 @@ const getAllUsers = (req, res) => {
     });
 }
 
-const getAllWriters = (req, res) => {
+const getAllWriters = (req,res) => {
     User.find({ type: "Writer" }).then(result => {
         res.status(200).json(result);
     }).catch(error => {
@@ -155,7 +171,14 @@ const getAllReaders = (req, res) => {
     });
 }
 
-const getOneUser = (req, res) => { }
+const getOneUser = (req, res) => { 
+    let userId  = req.params.userId;
+    User.findOne({ userId: userId }).then(result => {
+        res.status(200).json(result);
+    }).catch(error => {
+        res.status(500).json(error);
+    });
+}
 
 const getUserCount = (req, res) => {
     let readerCount = 0, writerCount = 0;
@@ -209,6 +232,7 @@ module.exports = {
     saveUser,
     loginUser,
     updateUser,
+    updateUserImg,
     getAllUsers,
     getOneUser,
     getUserCount,
