@@ -2,6 +2,7 @@ const User = require('../model/userSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../util/sendEmail');
+const crypto = require("crypto");
 require('dotenv').config();
 
 
@@ -137,7 +138,6 @@ const sendEmailToResetPassowrd = async (req, resp) => {
     await User.findOne({ name:name, email: email }).then(existingUser => {
         if (existingUser) {
             user = existingUser;
-            resp.status(200).json({ message: "Email sent successfully"});
         } else {
             resp.status(404).json({ message: "User not found" });
         }
@@ -146,7 +146,9 @@ const sendEmailToResetPassowrd = async (req, resp) => {
     });
 
     if (user){
-        const result = sendEmail.run();
+        const clientURL = process.env.CLIENT_URL;
+        const link = `${clientURL}?id=${user.userId}`;
+        sendEmail(user.email,"Password Reset Request",{name: user.name,link: link,},"../util/template/requestResetPassword.handlebars",resp);
     }
     
 }
