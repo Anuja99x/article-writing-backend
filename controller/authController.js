@@ -147,7 +147,7 @@ const sendEmailToResetPassowrd = async (req, resp) => {
 
     if (user){
         const clientURL = process.env.CLIENT_URL;
-        const link = `${clientURL}/passwordReset?id=${user.userId}`;
+        const link = `${clientURL}?id=${user.userId}`;
         sendEmail(user.email,"Password Reset Request",{name: user.name,link: link,},"../util/template/requestResetPassword.handlebars",resp);
     }
     
