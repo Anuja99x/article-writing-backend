@@ -1,4 +1,5 @@
 const User = require('../model/userSchema');
+const bcrypt = require('bcrypt');
 
 const updateUser = (req, res) => { 
     let { userId, name, email, type, imgUrl } = req.body
@@ -99,7 +100,21 @@ const getUserCountByMonthAndType = (req, res) => {
     });
 }
 
-
+const updatePassword=(req,resp)=>{
+    bcrypt.hash(req.body.newPass, 10).then(hash => {
+        const userDto = new User({
+            userId: req.body.userId,
+            password: hash,
+        });
+    User.updateOne({userId:userDto.userId},{
+        password:userDto.password,
+    }).then(result=>{
+        resp.status(201).json(result);
+    }).catch(error=>{
+        resp.status(500).json(error);
+        });
+    });    
+}
 module.exports = {
     updateUser,
     updateUserImg,
@@ -110,4 +125,5 @@ module.exports = {
     getAllReaders,
     getUsersByUserName,
     getUserCountByMonthAndType,
+    updatePassword,
 }
