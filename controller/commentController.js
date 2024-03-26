@@ -22,7 +22,7 @@ const updateComment=(req,resp)=>{
        commentContent:req.body.commentContent,
        time:req.body.time,
        profilePic:req.body.profilePic,
-       artID:req.body.artID,
+       artId:req.body.artId,
     }).then(result=>{
         resp.status(201).json(result);
     }).catch(error=>{
@@ -30,7 +30,7 @@ const updateComment=(req,resp)=>{
     });
 }
 const getComment=(req,resp)=>{
-    Comment.find({id:req.headers.id}).then(result=>{
+    Comment.find({artId:req.headers.id}).then(result=>{
         resp.status(200).json(result);
     }).catch(error=>{
        resp.status(500).json(error);
