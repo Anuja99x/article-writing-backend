@@ -19,5 +19,6 @@ router.get('/getAll', readerArticleController.getAllReaderArticle)
 router.get('/search', readerArticleController.searchReaderArticle)
 router.get('/count-by-domain', readerArticleController.getArticleCountByDomain)
 router.get('/articles-by-domain/:domain', readerArticleController.getArticleAndWriterDataByGivenDomain)
+router.get('/writer-popularity', readerArticleController.getWriterPopularity)
 
 module.exports = router;

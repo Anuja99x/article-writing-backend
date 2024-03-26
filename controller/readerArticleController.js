@@ -172,6 +172,14 @@ const getWriterPopularity = (req, resp) => {
         as: "userData",
       },
     },
+    {
+      $project: {
+        "userData.name": 1,
+        "userData.email": 1,
+        count: 1,
+        _id: 1,
+      },
+    }
   ];
 
   ReaderArticle.aggregate(agg)
@@ -191,4 +199,5 @@ module.exports = {
   searchReaderArticle,
   getArticleCountByDomain,
   getArticleAndWriterDataByGivenDomain,
+  getWriterPopularity,
 };
