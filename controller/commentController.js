@@ -8,6 +8,7 @@ const saveComment=(req,resp)=>{
        time:req.body.time,
        profilePic:req.body.profilePic,
        artId:req.body.artId,
+       userId:req.body.userId,
     });
     commentDto.save().then(result=>{
         resp.status(201).json(result);
