@@ -8,6 +8,7 @@ const saveComment=(req,resp)=>{
        time:req.body.time,
        profilePic:req.body.profilePic,
        artId:req.body.artId,
+       userId:req.body.userId,
     });
     commentDto.save().then(result=>{
         resp.status(201).json(result);
@@ -33,7 +34,7 @@ const getComment=(req,resp)=>{
 
 }
 const deleteComment=(req,resp)=>{
-    Comment.deleteOne({id:req.headers.id}).then(result=>{
+    Comment.deleteOne({comId:req.headers.id}).then(result=>{
         resp.status(200).json(result);
     }).catch(error=>{
         resp.status(500).json(error);
