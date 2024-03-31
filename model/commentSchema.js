@@ -6,6 +6,7 @@ const CommentSchema = new mongoose.Schema({
     time:{type: Date, require: true,default: Date.now},
    profilePic:{type: String, require: true},
    artId:{type: String, require: true},
+   userId:{type: String, require: true},
 },{ collection: 'commentData' });
 
 // Add a virtual property for the formatted time
