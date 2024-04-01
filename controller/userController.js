@@ -30,7 +30,7 @@ const updateUserImg= (userId, imgUrl) => {
 }
 
 const getAllUsers = (req, res) => {
-    User.find().then(result => {
+    User.aggregate([{$sort:{"savedAt":-1}}]).then(result => {
         res.status(200).json(result);
     }).catch(error => {
         res.status(500).json(error);
@@ -124,6 +124,32 @@ const updatePassword=(req,resp)=>{
         });
     });    
 }
+
+const searchUserByUsername = (req, res) => {
+    let { username } = req.params;
+    User.find({"name": {"$regex":"^"+username+""}, "type": {"$ne": "Admin"}}).then(result => {
+        res.status(200).json(result);
+    }).catch(error => {
+        res.status(500).json(error);
+    });
+}
+
+const getAllOtherUsers = (req, res) => {
+    const query = [
+        {
+            $sort: { "savedAt": -1 }
+        },
+        {
+            $match: { type: { $ne: "Admin" } }
+        }
+    ]
+    User.aggregate(query).then(result => {
+        res.status(200).json(result);
+    }).catch(error => {
+        res.status(500).json(error);
+    });
+}
+
 module.exports = {
     updateUser,
     updateUserImg,
@@ -136,4 +162,6 @@ module.exports = {
     getUserCountByMonthAndType,
     updatePassword,
     updateDisplayName,
+    searchUserByUsername,
+    getAllOtherUsers
 }
