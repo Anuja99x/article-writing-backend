@@ -7,5 +7,6 @@ router.patch('/update',userController.updateUser);
 router.patch('/updatePassword',userController.updatePassword);
 router.get('/getAll',userController.getAllUsers);
 router.get('/:userId',userController.getOneUser);
+router.put('/updateName',userController.updateDisplayName);
 
 module.exports = router;
