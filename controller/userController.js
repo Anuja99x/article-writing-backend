@@ -10,9 +10,9 @@ const updateUser = (req, res) => {
     });
 }
 
-const updateUserName = (req, res) => { 
-    let { userId, name} = req.body
-    User.findOneAndUpdate({ userId: userId }, { name: name}).then(result => {
+const updateDisplayName = (req, res) => { 
+    let {userId, name} = req.body
+    User.findOneAndUpdate({ userId: userId }, {displayName: name}).then(result => {
         res.status(200).json(result);
     }).catch(error => {
         res.status(500).json(error);
@@ -135,5 +135,5 @@ module.exports = {
     getUsersByUserName,
     getUserCountByMonthAndType,
     updatePassword,
-    updateUserName,
+    updateDisplayName,
 }
