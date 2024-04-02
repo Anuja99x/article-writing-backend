@@ -20,8 +20,7 @@ const ArticleSchema = new mongoose.Schema(
       default: 0,
     },
     userId: {
-      type: mongoose.Schema.Types.ObjectId, // Reference to the User schema
-      ref: "User",
+      type: String, // Reference to the User schema
       require: true,
     },
     status: {
