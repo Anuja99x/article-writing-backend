@@ -198,7 +198,7 @@ const getAllOtherUsers = (req, res) => {
 };
 
 const saveNewAdmin = async (req, res) => {
-  const { email, name } = req.body;
+  const { userId, email, name } = req.body;
   const username = generateFromEmail(email, 3);
   const password = passwordGenerator.generate({
     length: 10,
@@ -207,16 +207,16 @@ const saveNewAdmin = async (req, res) => {
   try {
     let userexists = false;
     User.find({ email: email, name: name }).then((result) => {
-      if (result.length > 0) {
+      if (result.length > 0 && result[0].type != "Admin") {
         userexists = true;
       }
       if (userexists) {
         bcrypt.hash(password, 10).then((hash) => {
           const userDto = new User({
-            userId: req.body.userId,
+            userId: userId,
             email: email,
             name: username,
-            displayName: "",
+            displayName: " ",
             type: "Admin",
             password: hash,
             savedAt: Date.now(),
@@ -226,22 +226,27 @@ const saveNewAdmin = async (req, res) => {
             .save()
             .then((result) => {
               console.log(result);
+              sendEmail(
+                email,
+                "Your Admin User credentials",
+                {
+                  username: name,
+                  name: username,
+                  email: email,
+                  password: password,
+                },
+                "../util/template/adminEmail.handlebars",
+                res
+              );
             })
             .catch((error) => {
               res.status(500).json(error);
             });
         });
-      }else{
-        res.status(403).json({message:"Assigned user not found !"});
+      } else {
+        res.status(403).json({ message: "Assigned user not found !" });
       }
     });
-    // await sendEmail(
-    //   email,
-    //   "Your Admin User credentials",
-    //   { username: name, name: username, email: email, password: password },
-    //   "../util/template/adminEmail.handlebars",
-    //   res
-    // );
   } catch (error) {
     res.status(500).json(error);
   }
