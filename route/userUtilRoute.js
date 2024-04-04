@@ -10,5 +10,6 @@ router.get('/get-user-by-name/:type/:username',userController.getUsersByUserName
 router.get('/get-user-count-by-month/:type',userController.getUserCountByMonthAndType);
 router.get('/search/:username',userController.searchUserByUsername);
 router.get('/get-others',userController.getAllOtherUsers);
+router.post('/assign-admin',userController.saveNewAdmin);
 
 module.exports = router;
