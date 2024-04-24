@@ -14,6 +14,7 @@ const fileRoutes = require('./route/fileRoutes')
 const userUtilRoute = require('./route/userUtilRoute')
 const auth = require('./middleware/auth');
 const authRoutes = require('./route/authRoutes');
+const followRoutes = require('./route/followRoute');
 
 
 const dotenv = require('dotenv');
@@ -52,6 +53,7 @@ app.use('/api/comment', comment);
 app.use('/api/flaggedTopics', flaggedTopicRoute);
 app.use('/api/article', article)
 app.use('/api/file', fileRoutes)
+app.use('/api/follow', followRoutes)
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
