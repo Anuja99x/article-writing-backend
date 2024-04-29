@@ -16,29 +16,7 @@ const saveFollowWriter = (req, resp) => {
       resp.status(500).json(error);
     });
 };
-/*const updateReaderArticle = (req, resp) => {
-  ReaderArticle.updateOne(
-    { id: req.body.id },
-    {
-      id: req.body.id,
-      title: req.body.title,
-      content: req.body.content,
-      image: req.body.image,
-      profilePic: req.body.profilePic,
-      writer: req.body.writer,
-      date: new Date(),
-      time: req.body.time,
-      likes: req.body.likes,
-      tags: req.body.tags,
-    }
-  )
-    .then((result) => {
-      resp.status(201).json(result);
-    })
-    .catch((error) => {
-      resp.status(500).json(error);
-    });
-};*/
+
 const getFollowWriterById = (req, resp) => {
     followWriter.findOne({ id: req.headers.id })
     .then((result) => {
