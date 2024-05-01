@@ -12,7 +12,7 @@ const router = express.Router();
 * */
 
 router.post('/save', followController.saveFollowWriter)
-router.get('/get', followController.getFollowWriter)
+router.post('/get', followController.getFollowWriter)
 router.delete('/delete', followController.deleteFollowWriter)
 router.delete('/deleteId', followController.deleteFollowWriterById)
 router.get('/getAll', followController.getAllFollowWriter)

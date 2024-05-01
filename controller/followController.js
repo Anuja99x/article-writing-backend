@@ -28,14 +28,17 @@ const getFollowWriterById = (req, resp) => {
 };
 
 const getFollowWriter = (req, resp) => {
-  const { readerId, writerId } = req.body; 
-
+  const readerId= req.body.readerId; 
+  const writerId= req.body.writerId; 
+  console.log(readerId+","+writerId);
   // Input validation
-  if (!readerId || !writerId) {
+  if (readerId=="" || writerId=="") {
     return resp.status(400).json({ error: 'Missing readerId or writerId' });
   }
 
-  followWriter.findOne({ readerId, writerId })
+  followWriter.findOne({ 
+    readerId, writerId 
+  })
     .then((result) => {
       if (!result) {
         return resp.status(404).json({ error: 'No follow relationship found between specified reader and writer' });
