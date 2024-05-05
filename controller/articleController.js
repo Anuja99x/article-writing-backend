@@ -1,3 +1,4 @@
+const { $Command } = require("@aws-sdk/client-s3");
 const Article = require("../model/articleSchema");
 
 // Controller function to create a new article
@@ -56,10 +57,7 @@ exports.getArticlesByWriterId = async (req, res) => {
 exports.getArticleById = async (req, res) => {
   try {
     const { articleId } = req.params;
-    const article = await Article.findById(articleId).populate(
-      "userId",
-      "name email"
-    );
+    const article = await Article.findOne({articleId:articleId})
     if (!article) {
       return res
         .status(404)
@@ -102,6 +100,43 @@ exports.deleteArticle = async (req, res) => {
         .json({ success: false, error: "Article not found" });
     }
     res.status(200).json({ success: true, article: deletedArticle });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+exports.getPendingArticles = async (req, res) => {
+  try {
+    const agg = [
+      {
+        $match: {
+          status: "pending",
+        }
+      },
+      {
+        $project: {
+          articleId: 1,
+          title: 1,
+          userId: 1,
+          updatedAt: 1,
+        },
+      },
+      {
+        $lookup: {
+          as: "userData",
+          from: "userData",
+          foreignField: "userId",
+          localField: "userId",
+        },
+      },
+      {
+        $sort: {
+          updatedAt: -1,
+        },
+      }
+    ];
+    const articles = await Article.aggregate(agg);
+    res.status(200).json({ articles });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

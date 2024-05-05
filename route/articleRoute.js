@@ -8,6 +8,8 @@ router.post('/', articleController.createArticle);
 // Route to get all articles
 router.get('/', articleController.getAllArticles);
 
+router.get('/pending', articleController.getPendingArticles);
+
 // Route to get articles by writerId
 router.get('/writer/:writerId', articleController.getArticlesByWriterId);
 
