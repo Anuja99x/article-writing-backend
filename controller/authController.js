@@ -13,6 +13,7 @@ const saveUser = (req, resp, next) => {
             userId: req.body.userId,
             email: req.body.email,
             name: req.body.name,
+            displayName: req.body.name,
             type: req.body.type,
             password: hash,
             savedAt: Date.now(),
@@ -58,12 +59,14 @@ const saveUser = (req, resp, next) => {
                             },
                         });
                 }).catch(error => {
-                    resp.status(500).json(error);
+                    console.log(error);
+                    resp.status(500).json({message:error});
                 });
             }
 
         }).catch(error => {
-            resp.status(500).json(error);
+            console.log(error);
+            resp.status(500).json({message:error});
         });
 
 
