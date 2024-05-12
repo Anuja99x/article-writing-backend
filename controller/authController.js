@@ -57,6 +57,7 @@ const saveUser = (req, resp, next) => {
                                 token: token
                             },
                         });
+                        console.log(resp);
                 }).catch(error => {
                     resp.status(500).json(error);
                 });
