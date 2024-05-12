@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const { generateFromEmail } = require("unique-username-generator");
 var passwordGenerator = require("generate-password");
 const sendEmail = require("../util/sendEmail");
+const { v4: uuidv4 } = require("uuid");
 
 const updateUser = (req, res) => {
   let { userId, name, email, type, imgUrl } = req.body;
@@ -252,6 +253,61 @@ const saveNewAdmin = async (req, res) => {
   }
 };
 
+const saveNewUserAsAdmin = async (req, res) => {
+  const { email, name } = req.body;
+  const username = generateFromEmail(email, 3);
+  const password = passwordGenerator.generate({
+    length: 10,
+    numbers: true,
+  });
+  try {
+    let userexists = false;
+    User.find({ email: email, type: "Admin" }).then((result) => {
+      if (result.length > 0) {
+        userexists = true;
+      }
+      if (!userexists) {
+        bcrypt.hash(password, 10).then((hash) => {
+          const userDto = new User({
+            userId: uuidv4(),
+            email: email,
+            name: username,
+            displayName: " ",
+            type: "Admin",
+            password: hash,
+            savedAt: Date.now(),
+            imgUrl: "",
+          });
+          userDto
+            .save()
+            .then((result) => {
+              console.log(result);
+              sendEmail(
+                email,
+                "Your User credentials",
+                {
+                  username: name,
+                  name: username,
+                  email: email,
+                  password: password,
+                },
+                "../util/template/adminEmail.handlebars",
+                res
+              );
+            })
+            .catch((error) => {
+              res.status(500).json(error);
+            });
+        });
+      } else {
+        res.status(403).json({ message: "User exists!" });
+      }
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 module.exports = {
   updateUser,
   updateUserImg,
@@ -267,4 +323,5 @@ module.exports = {
   searchUserByUsername,
   getAllOtherUsers,
   saveNewAdmin,
+  saveNewUserAsAdmin,
 };

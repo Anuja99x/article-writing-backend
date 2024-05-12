@@ -13,6 +13,7 @@ const article = require('./route/articleRoute')
 const fileRoutes = require('./route/fileRoutes')
 const userUtilRoute = require('./route/userUtilRoute')
 const auth = require('./middleware/auth');
+const admin = require('./middleware/admin');
 const authRoutes = require('./route/authRoutes');
 const followRoutes = require('./route/followRoute');
 const reportArticle = require('./route/reportRoute');
@@ -41,20 +42,20 @@ mongoose.connect(process.env.URI)
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', UserRoute); //http://localhost:3001/api/user
-app.use ('/api/user-util', auth, userUtilRoute);
+app.use ('/api/user-util', auth, admin, userUtilRoute);
 app.use('/api/contactMessage', ContactMessageRoute);
 
-app.use('/api/topicDomains', topicDomainRoute);
+app.use('/api/topicDomains', auth, topicDomainRoute);
 
-app.use('/api/topics', topicRoutes);
-app.use('/api/keywords', keywordRoutes);
+app.use('/api/topics', auth, topicRoutes);
+app.use('/api/keywords', auth, keywordRoutes);
 app.use('/api/readerArticle', readerArticle);
 app.use('/api/comment', comment);
 app.use('/api/reportArticle', reportArticle);
-app.use('/api/flaggedTopics', flaggedTopicRoute);
-app.use('/api/article', article)
+app.use('/api/flaggedTopics', auth, flaggedTopicRoute);
+app.use('/api/article', auth, article)
 app.use('/api/file', fileRoutes)
-app.use('/api/follow', followRoutes)
+app.use('/api/follow', auth, followRoutes)
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
