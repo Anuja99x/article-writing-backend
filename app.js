@@ -16,6 +16,7 @@ const auth = require('./middleware/auth');
 const admin = require('./middleware/admin');
 const authRoutes = require('./route/authRoutes');
 const followRoutes = require('./route/followRoute');
+const reportArticle = require('./route/reportRoute');
 
 
 const dotenv = require('dotenv');
@@ -50,7 +51,7 @@ app.use('/api/topics', auth, topicRoutes);
 app.use('/api/keywords', auth, keywordRoutes);
 app.use('/api/readerArticle', readerArticle);
 app.use('/api/comment', comment);
-
+app.use('/api/reportArticle', reportArticle);
 app.use('/api/flaggedTopics', auth, flaggedTopicRoute);
 app.use('/api/article', auth, article)
 app.use('/api/file', fileRoutes)
