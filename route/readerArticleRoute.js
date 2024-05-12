@@ -12,7 +12,7 @@ const router = express.Router();
 * */
 
 router.post('/save', readerArticleController.saveReaderArticle)
-router.put('/update', readerArticleController.updateReaderArticle)
+router.put('/updateLikes', readerArticleController.updateLikesReaderArticle)
 router.get('/get', readerArticleController.getReaderArticle)
 router.delete('/delete', readerArticleController.deleteReaderArticle)
 router.get('/getAll', readerArticleController.getAllReaderArticle)
