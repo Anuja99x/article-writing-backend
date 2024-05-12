@@ -2,6 +2,8 @@ const express = require('express');
 const readerArticleController = require('../controller/readerArticleController');
 
 const router = express.Router();
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 /*
 * POST-> SAVE -->Body
@@ -17,8 +19,8 @@ router.get('/get', readerArticleController.getReaderArticle)
 router.delete('/delete', readerArticleController.deleteReaderArticle)
 router.get('/getAll', readerArticleController.getAllReaderArticle)
 router.get('/search', readerArticleController.searchReaderArticle)
-router.get('/count-by-domain', readerArticleController.getArticleCountByDomain)
-router.get('/articles-by-domain/:domain', readerArticleController.getArticleAndWriterDataByGivenDomain)
-router.get('/writer-popularity', readerArticleController.getWriterPopularity)
+router.get('/count-by-domain', auth, admin, readerArticleController.getArticleCountByDomain)
+router.get('/articles-by-domain/:domain', auth, admin, readerArticleController.getArticleAndWriterDataByGivenDomain)
+router.get('/writer-popularity', auth, admin, readerArticleController.getWriterPopularity)
 
 module.exports = router;

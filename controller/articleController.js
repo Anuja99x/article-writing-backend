@@ -57,7 +57,7 @@ exports.getArticlesByWriterId = async (req, res) => {
 exports.getArticleById = async (req, res) => {
   try {
     const { articleId } = req.params;
-    const article = await Article.findOne({articleId:articleId})
+    const article = await Article.findOne({ articleId: articleId });
     if (!article) {
       return res
         .status(404)
@@ -73,10 +73,42 @@ exports.getArticleById = async (req, res) => {
 exports.updateArticle = async (req, res) => {
   try {
     const { articleId } = req.params;
-    const updatedArticle = await Article.findByIdAndUpdate(
-      articleId,
-      req.body,
-      { new: true }
+    const {
+      title,
+      content,
+      likes,
+      userId,
+      status,
+      savedType,
+      coverImage,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      createdAt,
+      updatedAt,
+      domain,
+    } = req.body;
+    const updatedArticle = await Article.updateOne(
+      { articleId },
+      {
+        title: title,
+        content: content,
+        likes: likes,
+        userId: userId,
+        status: status,
+        savedType: savedType,
+        coverImage: coverImage,
+        image1: image1,
+        image2: image2,
+        image3: image3,
+        image4: image4,
+        image5: image5,
+        createdAt: createdAt,
+        updatedAt: new Date(),
+        domain: domain,
+      }
     );
     if (!updatedArticle) {
       return res
@@ -111,7 +143,7 @@ exports.getPendingArticles = async (req, res) => {
       {
         $match: {
           status: "pending",
-        }
+        },
       },
       {
         $project: {
@@ -133,7 +165,7 @@ exports.getPendingArticles = async (req, res) => {
         $sort: {
           updatedAt: -1,
         },
-      }
+      },
     ];
     const articles = await Article.aggregate(agg);
     res.status(200).json({ articles });
