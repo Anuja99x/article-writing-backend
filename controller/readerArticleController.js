@@ -151,7 +151,7 @@ const getArticleAndWriterDataByGivenDomain = (req, resp) => {
     },
     {
       $project: {
-        date: 1,
+        updatedAt: 1,
         domain: 1,
         id: 1,
         title: 1,
