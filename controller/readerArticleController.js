@@ -45,8 +45,25 @@ const updateReaderArticle = (req, resp) => {
       resp.status(500).json(error);
     });
 };
+
+const updateLikesReaderArticle = (req, resp) => {
+  ReaderArticle.updateOne(
+    { id: req.body.id },
+    {
+      likes: req.body.likes,
+     
+    }
+  )
+    .then((result) => {
+      resp.status(201).json(result);
+    })
+    .catch((error) => {
+      resp.status(500).json(error);
+    });
+};
+
 const getReaderArticle = (req, resp) => {
-  ReaderArticle.findOne({ id: req.headers.id })
+  ReaderArticle.findOne({ articleId: req.headers.id })
     .then((result) => {
       resp.status(200).json(result);
     })
@@ -78,7 +95,6 @@ const searchReaderArticle = (req, resp) => {
     $or: [
       { content: { $regex: req.headers.text, $options: "i" } },
       { title: { $regex: req.headers.text, $options: "i" } },
-      { writer: { $regex: req.headers.text, $options: "i" } },
       { tags: { $regex: req.headers.text, $options: "i" } },
     ],
   })
@@ -200,4 +216,5 @@ module.exports = {
   getArticleCountByDomain,
   getArticleAndWriterDataByGivenDomain,
   getWriterPopularity,
+  updateLikesReaderArticle
 };
