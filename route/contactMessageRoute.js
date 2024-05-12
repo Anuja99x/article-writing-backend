@@ -7,9 +7,9 @@ const router = express.Router();
 
 router.post('/add',ContactMessageController.saveMessage);
 router.put('/update', auth, admin, ContactMessageController.updateMessage);
-router.get('/getAll', auth, ContactMessageController.getAllMessages);
+router.get('/getAll', auth, admin, ContactMessageController.getAllMessages);
 router.get('/get',ContactMessageController.getOneMessage);
-router.get('/get-count',auth,ContactMessageController.getNotRepliedMessageCount);
+router.get('/get-count', auth, admin, ContactMessageController.getNotRepliedMessageCount);
 
 
 module.exports = router;
