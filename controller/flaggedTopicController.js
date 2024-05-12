@@ -3,14 +3,11 @@ const { v4: uuidv4 } = require('uuid');
 // Controller function to save a flagged topic
 const saveFlaggedTopic = async (req, res) => {
     try {
-        
         const { topicId, topicName, flaggedBy, reason } = req.body;
         const flaggedTopicId = `flaggedTopic-${uuidv4()}`;
         const flaggedTopic = new FlaggedTopic({ flaggedTopicId, topicId, topicName, flaggedBy, reason });
         await flaggedTopic.save();
         res.status(201).json(flaggedTopic);
-
-        
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -23,7 +20,6 @@ const getFlaggedTopicById = async (req, res) => {
     try {
         const { flaggedTopicId } = req.params;
         const flaggedTopic = await FlaggedTopic.findOne({ flaggedTopicId: flaggedTopicId }, { topicId: 1, topicName: 0, _id: 0  });
-      
         res.status(200).json(flaggedTopic);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -54,18 +50,13 @@ const getUniqueTopicIds = async (req, res) => {
 const deleteFlaggedTopicsByTopicId = async (req, res) => {
     try {
         const { topicId } = req.params;
-        
         // Delete flagged topics with the given topicId
         await FlaggedTopic.deleteMany({ topicId });
-
         res.status(200).json({ message: 'Flagged topics deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
-
-
-
 
 
 module.exports = {
