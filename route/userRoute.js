@@ -8,5 +8,6 @@ router.patch('/updatePassword',userController.updatePassword);
 router.get('/getAll',userController.getAllUsers);
 router.get('/:userId',userController.getOneUser);
 router.patch('/updateName',userController.updateDisplayName);
+router.patch('/deactivateUser/:writerId', userController.deactivateUser);
 
 module.exports = router;

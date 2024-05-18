@@ -308,6 +308,26 @@ const saveNewUserAsAdmin = async (req, res) => {
   }
 };
 
+const deactivateUser = (req, res) => {
+  const { writerId } = req.params;
+
+  User.findOneAndUpdate(
+    { userId: writerId },
+    { isActive: false },
+    { new: true } 
+  )
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json({ message: "User deactivated successfully", user: updatedUser });
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Error deactivating user", error: error });
+    });
+};
+
+
 module.exports = {
   updateUser,
   updateUserImg,
@@ -324,4 +344,5 @@ module.exports = {
   getAllOtherUsers,
   saveNewAdmin,
   saveNewUserAsAdmin,
+  deactivateUser
 };
