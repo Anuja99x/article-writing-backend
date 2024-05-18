@@ -6,6 +6,7 @@ const saveApproval = (req, resp) => {
     approvalId: uuid.v4(),
     adminId: req.body.adminId,
     articleId: req.body.articleId,
+    status: req.body.status,
     approvedAt: new Date(),
   });
   approvalDto
@@ -68,6 +69,7 @@ const getApprovalHistory = (req, resp) => {
         _id: 0,
         adminId: 1,
         articleId: 1,
+        status: 1,
         "admin.name": 1,
         "article.title": 1,
         "writer.name": 1,
