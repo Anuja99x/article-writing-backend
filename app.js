@@ -17,6 +17,7 @@ const admin = require('./middleware/admin');
 const authRoutes = require('./route/authRoutes');
 const followRoutes = require('./route/followRoute');
 const reportArticle = require('./route/reportRoute');
+const approvalRoutes = require('./route/articleApprovalRoute');
 
 
 const dotenv = require('dotenv');
@@ -56,6 +57,7 @@ app.use('/api/flaggedTopics', auth, flaggedTopicRoute);
 app.use('/api/article', auth, article)
 app.use('/api/file', fileRoutes)
 app.use('/api/follow', auth, followRoutes)
+app.use('/api/approval', auth, admin, approvalRoutes)
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
