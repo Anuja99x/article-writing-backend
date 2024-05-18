@@ -71,6 +71,21 @@ const getReaderArticle = (req, resp) => {
       resp.status(500).json(error);
     });
 };
+const getReaderArticleById = (req, resp) => {
+  const articleId = req.params.articleId; 
+  ReaderArticle.findOne({ articleId: articleId })
+      .then((result) => {
+          if (result) {
+              resp.status(200).json(result);
+          } else {
+              resp.status(404).json({ message: 'Article not found' });
+          }
+      })
+      .catch((error) => {
+          resp.status(500).json({ error: error.message });
+      });
+};
+
 const deleteReaderArticle = (req, resp) => {
   ReaderArticle.deleteOne({ id: req.headers.id })
     .then((result) => {
@@ -216,5 +231,6 @@ module.exports = {
   getArticleCountByDomain,
   getArticleAndWriterDataByGivenDomain,
   getWriterPopularity,
-  updateLikesReaderArticle
+  updateLikesReaderArticle,
+  getReaderArticleById
 };

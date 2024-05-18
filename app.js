@@ -16,8 +16,8 @@ const auth = require('./middleware/auth');
 const admin = require('./middleware/admin');
 const authRoutes = require('./route/authRoutes');
 const followRoutes = require('./route/followRoute');
-const reportArticle = require('./route/reportRoute');
-
+const reportedArticle = require('./route/reportedArticleRoute');
+const reportedWriter = require('./route/reportedWriterRoute');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -28,7 +28,7 @@ const PORT = 3001;
 app.use(bodyParser.json());
 
 var cors = require('cors');
-const flaggedTopicSchema = require("./model/flaggedTopicSchema");
+const flaggedTopicSchema = require("./model/flaggedTopicSchema"); //not used
 app.use(cors());
 
 mongoose.connect(process.env.URI)
@@ -51,7 +51,8 @@ app.use('/api/topics', auth, topicRoutes);
 app.use('/api/keywords', auth, keywordRoutes);
 app.use('/api/readerArticle', readerArticle);
 app.use('/api/comment', comment);
-app.use('/api/reportArticle', reportArticle);
+app.use('/api/reportArticle', reportedArticle);
+app.use('/api/reportedWriter', reportedWriter);
 app.use('/api/flaggedTopics', auth, flaggedTopicRoute);
 app.use('/api/article', auth, article)
 app.use('/api/file', fileRoutes)
