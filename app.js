@@ -1,9 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const UserRoute = require('./route/userRoute');
+const UserRoute = require('./route/userRoute'); //load all routes
 const ContactMessageRoute = require('./route/contactMessageRoute');
 
+
+//load all routes
 const topicDomainRoute = require('./route/topicDomainRoute');
 const topicRoutes = require('./route/topicRoute');
 const keywordRoutes = require('./route/keywordRoute');
@@ -17,14 +19,14 @@ const userUtilRoute = require('./route/userUtilRoute')
 const dotenv = require('dotenv');
 dotenv.config();
 
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser') 
 
 const PORT = 3001;
-app.use(bodyParser.json());
+app.use(bodyParser.json()); //port that run the app
 
 var cors = require('cors');
 const flaggedTopicSchema = require("./model/flaggedTopicSchema");
-app.use(cors());
+app.use(cors()); 
 
 mongoose.connect(process.env.URI)
   .then(() => {
@@ -35,6 +37,7 @@ mongoose.connect(process.env.URI)
   });
 
 
+  //loading imported routes to the app
 app.use('/api/user', UserRoute); //http://localhost:3001/api/user
 app.use ('/api/user-util', userUtilRoute);
 app.use('/api/contactMessage', ContactMessageRoute);

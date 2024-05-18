@@ -1,6 +1,6 @@
 const Article = require("../model/articleSchema");
 
-// Controller function to create a new article
+// Create a new article
 exports.createArticle = async (req, res) => {
   try {
     const { articleId, userId, title, content, savedType } = req.body;
@@ -23,7 +23,7 @@ exports.createArticle = async (req, res) => {
   }
 };
 
-// Controller function to retrieve all articles
+// To retrieve all articles
 exports.getAllArticles = async (req, res) => {
   try {
     const articles = await Article.find().populate("userId", "name email");
@@ -33,7 +33,7 @@ exports.getAllArticles = async (req, res) => {
   }
 };
 
-// Controller function to get articles by writerId
+// To get articles by writerId
 exports.getArticlesByWriterId = async (req, res) => {
   try {
     const { writerId } = req.params;
@@ -52,7 +52,7 @@ exports.getArticlesByWriterId = async (req, res) => {
   }
 };
 
-// Controller function to get a single article by its ID
+// To get a single article by its ID
 exports.getArticleById = async (req, res) => {
   try {
     const { articleId } = req.params;
@@ -71,7 +71,7 @@ exports.getArticleById = async (req, res) => {
   }
 };
 
-// Controller function to update an existing article
+//To update an existing article
 exports.updateArticle = async (req, res) => {
   try {
     const { articleId } = req.params;
@@ -91,7 +91,7 @@ exports.updateArticle = async (req, res) => {
   }
 };
 
-// Controller function to delete an article
+//To delete an article
 exports.deleteArticle = async (req, res) => {
   try {
     const { articleId } = req.params;

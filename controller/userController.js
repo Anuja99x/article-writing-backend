@@ -1,5 +1,5 @@
-const User = require('../model/userSchema');
-const bcrypt = require('bcrypt');
+const User = require('../model/userSchema'); 
+const bcrypt = require('bcrypt'); //encrypting user pws
 const jwt = require('jsonwebtoken');
 
 const saveUser = (req, resp, next) => {

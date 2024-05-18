@@ -20,7 +20,7 @@ const ArticleSchema = new mongoose.Schema(
       default: 0,
     },
     userId: {
-      type: String, // Reference to the User schema
+      type: String, //Reference to the User schema
       require: true,
     },
     status: {
@@ -30,6 +30,14 @@ const ArticleSchema = new mongoose.Schema(
     },
     savedType: {
       type: String, // draft, saved, trashed, deleted
+    },
+    domain: {
+      type: String,
+      default: "",
+    },
+    keyWords: {
+      type: Array,
+      default: [],
     },
     coverImage: {
       type: String,
