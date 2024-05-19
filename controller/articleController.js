@@ -38,10 +38,7 @@ exports.getAllArticles = async (req, res) => {
 exports.getArticlesByWriterId = async (req, res) => {
   try {
     const { writerId } = req.params;
-    const articles = await Article.find({ userId: writerId }).populate(
-      "userId",
-      "name email"
-    );
+    const articles = await Article.find({ userId: writerId });
     if (!articles) {
       return res
         .status(404)
