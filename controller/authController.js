@@ -79,6 +79,10 @@ const loginUser = (req, resp, next) => {
 
     User.findOne({ name: username, email: email }).then(existingUser => {
         if (existingUser) {
+            // Check if the account is active
+            if (!existingUser.isActive) {
+                return resp.status(403).json({ message: "Account is deactivated" });
+            }
             bcrypt.compare(password, existingUser.password).then(result => {
                 if (result) {
                     let token;
@@ -111,6 +115,7 @@ const loginUser = (req, resp, next) => {
                                 type: existingUser.type,
                                 imgUrl: existingUser.imgUrl,
                                 token: token,
+                                isActive: existingUser.isActive
                             },
                         });
                 } else {
