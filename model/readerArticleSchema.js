@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const ReaderArticleSchema = new mongoose.Schema({
-   articleId:{type: String, unique: true},
+   articleId:{type: String,unique: true,required: true,},
    title:{type: String, require: true},
    content:{type: String, require: true},
    coverImage:{type: String, require: true},

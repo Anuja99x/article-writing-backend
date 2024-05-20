@@ -48,7 +48,7 @@ const updateReaderArticle = (req, resp) => {
 
 const updateLikesReaderArticle = (req, resp) => {
   ReaderArticle.updateOne(
-    { id: req.body.id },
+    { articleId: req.body.id },
     {
       likes: req.body.likes,
      
@@ -63,7 +63,8 @@ const updateLikesReaderArticle = (req, resp) => {
 };
 
 const getReaderArticle = (req, resp) => {
-  ReaderArticle.findOne({ articleId: req.headers.id })
+  const id = req.body.id;
+  ReaderArticle.findOne({ articleId: id })
     .then((result) => {
       resp.status(200).json(result);
     })
