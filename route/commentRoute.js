@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post('/save', commentController.saveComment)
 router.put('/update', commentController.updateComment)
-router.get('/get', commentController.getComment)
+router.post('/get', commentController.getComment)
 router.delete('/delete', commentController.deleteComment)
 router.get('/getAll', commentController.getAllComment)
 router.get('/search', commentController.searchComment)
