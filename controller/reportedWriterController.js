@@ -69,10 +69,25 @@ const getDeactivatedWriterIds = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+const deleteReportedWritersByWriterId = async (req, res) => {
+    try {
+        const writerId = req.params.writerId;
+        const result = await ReportedWriter.deleteMany({ writerId });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'No records found for the specified writerId.' });
+        }
+
+        res.status(200).json({ message: 'Records deleted successfully.' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 module.exports = {
     saveReportedWriters,
     getUniqueReportedWriterIds,
     updateToDeactivatedDataByWriterId,
-    getDeactivatedWriterIds
+    getDeactivatedWriterIds,
+    deleteReportedWritersByWriterId
 };
