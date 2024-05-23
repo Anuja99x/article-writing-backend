@@ -12,12 +12,12 @@ const router = express.Router();
 *
 * */
 
-router.post('/save', likeController.saveLikeWriter)
-router.post('/get', likeController.getLikeWriter)
-router.delete('/delete', likeController.deleteLikeWriter)
-router.delete('/deleteId', likeController.deleteLikeWriterById)
-router.get('/getAll', likeController.getAllLikeWriter)
-router.get('/search', likeController.searchLikeWriter)
+router.post('/save', likeController.saveLikeArticle)
+router.post('/get', likeController.getLikeArticle)
+router.delete('/delete', likeController.deleteLikeArticle)
+router.delete('/deleteId', likeController.deleteLikeArticleById)
+router.get('/getAll', likeController.getAllLikeArticle)
+router.get('/search', likeController.searchLikeArticle)
 
 
 module.exports = router;

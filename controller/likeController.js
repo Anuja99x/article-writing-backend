@@ -1,10 +1,11 @@
 const likeWriter = require("../model/likeSchema");
 
-const saveLikeWriter = (req, resp) => {
+const saveLikeArticle = (req, resp) => {
   const likeWriterDto = new likeWriter({
     id: req.body.id,
     readerId: req.body.readerId,
     writerId: req.body.writerId,
+    articleId: req.body.articleId,
     date: new Date(),
   });
   likeWriterDto
@@ -17,7 +18,7 @@ const saveLikeWriter = (req, resp) => {
     });
 };
 
-const getLikeWriterById = (req, resp) => {
+const getLikeArticleById = (req, resp) => {
     likeWriter
     .findOne({ id: req.headers.id })
     .then((result) => {
@@ -28,12 +29,13 @@ const getLikeWriterById = (req, resp) => {
     });
 };
 
-const getLikeWriter = (req, resp) => {
+const getLikeArticle = (req, resp) => {
   const readerId = req.body.readerId;
   const writerId = req.body.writerId;
-  console.log(readerId + "," + writerId);
+  const articleId = req.body.articleId;
+  console.log(readerId + "," + writerId+","+articleId);
   // Input validation
-  if (readerId == "" || writerId == "") {
+  if (readerId == "" || writerId == "" || articleId=="") {
     return resp.status(400).json({ error: "Missing readerId or writerId" });
   }
 
@@ -41,6 +43,7 @@ const getLikeWriter = (req, resp) => {
     .findOne({
       readerId,
       writerId,
+      articleId
     })
     .then((result) => {
       if (!result) {
@@ -59,7 +62,7 @@ const getLikeWriter = (req, resp) => {
     });
 };
 
-const deleteLikeWriterById = (req, resp) => {
+const deleteLikeArticleById = (req, resp) => {
     likeWriter
     .deleteOne({
       id: req.headers.id,
@@ -72,36 +75,36 @@ const deleteLikeWriterById = (req, resp) => {
     });
 };
 
-const deleteLikeWriter = (req, res) => {
-  const { readerId, writerId } = req.body; // Assuming these are passed in the request body.
+const deleteLikeArticle = (req, res) => {
+  const { readerId, writerId,articleId } = req.body; // Assuming these are passed in the request body.
 
   // Input validation
-  if (!readerId || !writerId) {
-    return res.status(400).json({ error: "Missing readerId or writerId" });
+  if (!readerId || !writerId || !articleId) {
+    return res.status(400).json({ error: "Missing readerId or writerId  or articleId" });
   }
 
   likeWriter
-    .deleteOne({ readerId, writerId })
+    .deleteOne({ readerId, writerId, articleId })
     .then((result) => {
       if (result.deletedCount === 0) {
         return res
           .status(404)
           .json({
             message:
-              "No follow relationship found between specified reader and writer",
+              "No liked article found between specified reader and writer",
           });
       }
       res
         .status(200)
-        .json({ message: "Follow relationship deleted successfully" });
+        .json({ message: "like removed successfully" });
     })
     .catch((error) => {
-      console.error("Error deleting follow relationship:", error);
+      console.error("Error removing like:", error);
       res.status(500).json({ error: "Internal server error" });
     });
 };
 
-const getAllLikeWriter = (req, resp) => {
+const getAllLikeArticle = (req, resp) => {
     likeWriter
     .find()
     .then((result) => {
@@ -112,12 +115,13 @@ const getAllLikeWriter = (req, resp) => {
     });
 };
 
-const searchLikeWriter = (req, resp) => {
+const searchLikeArticle = (req, resp) => {
     likeWriter
     .find({
       $or: [
         { readerId: { $regex: req.headers.text, $options: "i" } },
         { writerId: { $regex: req.headers.text, $options: "i" } },
+        { articleId: { $regex: req.headers.text, $options: "i" } },
       ],
     })
     .then((result) => {
@@ -130,11 +134,11 @@ const searchLikeWriter = (req, resp) => {
 
 
 module.exports = {
-  saveLikeWriter,
-  deleteLikeWriter,
-  getLikeWriter,
-  getAllLikeWriter,
-  searchLikeWriter,
-  deleteLikeWriterById,
-  getLikeWriterById,
+  saveLikeArticle,
+  deleteLikeArticle,
+  getLikeArticle,
+  getAllLikeArticle,
+  searchLikeArticle,
+  deleteLikeArticleById,
+  getLikeArticleById,
 };
