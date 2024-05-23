@@ -4,7 +4,6 @@ const saveLikeArticle = (req, resp) => {
   const likeWriterDto = new likeWriter({
     id: req.body.id,
     readerId: req.body.readerId,
-    writerId: req.body.writerId,
     articleId: req.body.articleId,
     date: new Date(),
   });
@@ -31,18 +30,15 @@ const getLikeArticleById = (req, resp) => {
 
 const getLikeArticle = (req, resp) => {
   const readerId = req.body.readerId;
-  const writerId = req.body.writerId;
   const articleId = req.body.articleId;
-  console.log(readerId + "," + writerId+","+articleId);
   // Input validation
-  if (readerId == "" || writerId == "" || articleId=="") {
+  if (readerId == "" || articleId=="") {
     return resp.status(400).json({ error: "Missing readerId or writerId" });
   }
 
   likeWriter
     .findOne({
       readerId,
-      writerId,
       articleId
     })
     .then((result) => {
@@ -76,15 +72,15 @@ const deleteLikeArticleById = (req, resp) => {
 };
 
 const deleteLikeArticle = (req, res) => {
-  const { readerId, writerId,articleId } = req.body; // Assuming these are passed in the request body.
+  const { readerId,articleId } = req.body; // Assuming these are passed in the request body.
 
   // Input validation
-  if (!readerId || !writerId || !articleId) {
+  if (!readerId || !articleId) {
     return res.status(400).json({ error: "Missing readerId or writerId  or articleId" });
   }
 
   likeWriter
-    .deleteOne({ readerId, writerId, articleId })
+    .deleteOne({ readerId, articleId })
     .then((result) => {
       if (result.deletedCount === 0) {
         return res
@@ -120,7 +116,6 @@ const searchLikeArticle = (req, resp) => {
     .find({
       $or: [
         { readerId: { $regex: req.headers.text, $options: "i" } },
-        { writerId: { $regex: req.headers.text, $options: "i" } },
         { articleId: { $regex: req.headers.text, $options: "i" } },
       ],
     })
