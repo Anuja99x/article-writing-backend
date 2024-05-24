@@ -7,7 +7,8 @@ const reportedWriterSchema = new mongoose.Schema({
     time: { type: Date, required: true, default: Date.now },
     writerId: { type: String, required: true },
     isDeactivated: { type: Boolean, default: false },
-    isDeactivatedBy: { type: String }
+    deactivatedBy: { type: String },
+    deactivatedAt: { type: Date }
 }, { collection: 'reportedWriters' });
 
 module.exports = mongoose.model('ReportedWriter', reportedWriterSchema);
