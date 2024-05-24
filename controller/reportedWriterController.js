@@ -36,9 +36,15 @@ const getUniqueReportedWriterIds = async (req, res) => {
 const updateToDeactivatedDataByWriterId = async (req, res) => {
     try {
         const writerId = req.params.writerId;
+        const adminId = req.body.adminId;
+        
+        const now = new Date();
+        const SLSTOffset = 5.5 * 60 * 60 * 1000; // Convert 5 hours and 30 minutes to milliseconds
+        const deactivatedAtSLST = new Date(now.getTime() + SLSTOffset);
+
         const result = await ReportedWriter.updateMany(
             { writerId, isDeactivated: false },
-            { $set: { isDeactivated: true } }
+            { $set: { isDeactivated: true, deactivatedBy: adminId, deactivatedAt: deactivatedAtSLST } }
         );
 
         if (result.matchedCount === 0) {
@@ -51,6 +57,7 @@ const updateToDeactivatedDataByWriterId = async (req, res) => {
     }
 };
 
+
 const getDeactivatedWriterIds = async (req, res) => {
     try {
         const deactivatedWriterIds = await ReportedWriter.aggregate([
@@ -60,7 +67,9 @@ const getDeactivatedWriterIds = async (req, res) => {
                     _id: "$writerId", // Group by writerId
                     writerId: { $first: "$writerId" },
                     count: { $sum: 1 },
-                    reasons: { $push: "$reportedReason" }
+                    reasons: { $push: "$reportedReason" },
+                    deactivatedBy: { $first: "$deactivatedBy" },
+                    deactivatedAt: { $first: "$deactivatedAt" } 
                 }
             }
         ]);
