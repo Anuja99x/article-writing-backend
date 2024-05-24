@@ -39,7 +39,7 @@ const updateToDeactivatedDataByWriterId = async (req, res) => {
         const adminId = req.body.adminId;
         
         const now = new Date();
-        const SLSTOffset = 5.5 * 60 * 60 * 1000; // Convert 5 hours and 30 minutes to milliseconds
+        const SLSTOffset = 5.5 * 60 * 60 * 1000; // Convert to Sri Lanka time
         const deactivatedAtSLST = new Date(now.getTime() + SLSTOffset);
 
         const result = await ReportedWriter.updateMany(
