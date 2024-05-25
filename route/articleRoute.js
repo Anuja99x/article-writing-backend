@@ -8,6 +8,8 @@ router.post('/', articleController.createArticle);
 // Route to get all articles
 router.get('/', articleController.getAllArticles);
 
+router.get('/pending', articleController.getPendingArticles);
+
 // Route to get articles by writerId
 router.get('/writer/:writerId', articleController.getArticlesByWriterId);
 
@@ -15,9 +17,11 @@ router.get('/writer/:writerId', articleController.getArticlesByWriterId);
 router.get('/:articleId', articleController.getArticleById);
 
 // Route to update an existing article
-router.put('/:articleId', articleController.updateArticle);
+router.patch('/:articleId', articleController.updateArticle);
 
 // Route to delete an article
 router.delete('/:articleId', articleController.deleteArticle);
 
+router.patch('/reportArticle/:articleId', articleController.reportArticle);
+router.get('/reportedArticles/get', articleController.getReportedArticles);
 module.exports = router;

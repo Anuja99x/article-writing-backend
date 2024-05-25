@@ -1,3 +1,4 @@
+const { $Command } = require("@aws-sdk/client-s3");
 const Article = require("../model/articleSchema");
 
 // Create a new article
@@ -56,10 +57,7 @@ exports.getArticlesByWriterId = async (req, res) => {
 exports.getArticleById = async (req, res) => {
   try {
     const { articleId } = req.params;
-    const article = await Article.findById(articleId).populate(
-      "userId",
-      "name email"
-    );
+    const article = await Article.findOne({ articleId: articleId });
     if (!article) {
       return res
         .status(404)
@@ -75,10 +73,42 @@ exports.getArticleById = async (req, res) => {
 exports.updateArticle = async (req, res) => {
   try {
     const { articleId } = req.params;
-    const updatedArticle = await Article.findByIdAndUpdate(
-      articleId,
-      req.body,
-      { new: true }
+    const {
+      title,
+      content,
+      likes,
+      userId,
+      status,
+      savedType,
+      coverImage,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      createdAt,
+      updatedAt,
+      domain,
+    } = req.body;
+    const updatedArticle = await Article.updateOne(
+      { articleId },
+      {
+        title: title,
+        content: content,
+        likes: likes,
+        userId: userId,
+        status: status,
+        savedType: savedType,
+        coverImage: coverImage,
+        image1: image1,
+        image2: image2,
+        image3: image3,
+        image4: image4,
+        image5: image5,
+        createdAt: createdAt,
+        updatedAt: new Date(),
+        domain: domain,
+      }
     );
     if (!updatedArticle) {
       return res
@@ -106,3 +136,66 @@ exports.deleteArticle = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+exports.getPendingArticles = async (req, res) => {
+  try {
+    const agg = [
+      {
+        $match: {
+          status: "pending",
+        },
+      },
+      {
+        $project: {
+          articleId: 1,
+          title: 1,
+          userId: 1,
+          updatedAt: 1,
+        },
+      },
+      {
+        $lookup: {
+          as: "userData",
+          from: "userData",
+          foreignField: "userId",
+          localField: "userId",
+        },
+      },
+      {
+        $sort: {
+          updatedAt: -1,
+        },
+      },
+    ];
+    const articles = await Article.aggregate(agg);
+    res.status(200).json({ articles });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+exports.reportArticle = async (req, res) => {
+  try {
+    const { articleId } = req.params;
+    const updatedArticle = await Article.updateOne(
+      { articleId: articleId },
+      { $set: { status: 'reported' } }
+    );
+
+    if (updatedArticle.nModified === 0) {
+      return res.status(404).json({ success: false, error: 'Article not found or already reported' });
+    }
+
+    res.status(200).json({ success: true, message: 'Article status updated to reported' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+exports.getReportedArticles = async (req, res) => {
+  try {
+    const reportedArticles = await Article.find({ status: 'reported' }).populate("userId", "name email");
+    res.status(200).json({ success: true, reportedArticles });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+

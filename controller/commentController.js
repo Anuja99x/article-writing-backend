@@ -8,6 +8,7 @@ const saveComment=(req,resp)=>{
        time:req.body.time,
        profilePic:req.body.profilePic,
        artId:req.body.artId,
+       userId:req.body.userId,
     });
     commentDto.save().then(result=>{
         resp.status(201).json(result);
@@ -16,13 +17,8 @@ const saveComment=(req,resp)=>{
     });
 }
 const updateComment=(req,resp)=>{
-    commentDto.updateOne({id:req.body.id},{
-        comId:req.body.comId,
-       commentorName:req.body.commentorName,
+    Comment.updateOne({comId:req.body.comId},{
        commentContent:req.body.commentContent,
-       time:req.body.time,
-       profilePic:req.body.profilePic,
-       artID:req.body.artID,
     }).then(result=>{
         resp.status(201).json(result);
     }).catch(error=>{
@@ -30,7 +26,7 @@ const updateComment=(req,resp)=>{
     });
 }
 const getComment=(req,resp)=>{
-    Comment.find({id:req.headers.id}).then(result=>{
+    Comment.find({artId:req.headers.id}).then(result=>{
         resp.status(200).json(result);
     }).catch(error=>{
        resp.status(500).json(error);
@@ -38,7 +34,7 @@ const getComment=(req,resp)=>{
 
 }
 const deleteComment=(req,resp)=>{
-    Comment.deleteOne({id:req.headers.id}).then(result=>{
+    Comment.deleteOne({comId:req.headers.id}).then(result=>{
         resp.status(200).json(result);
     }).catch(error=>{
         resp.status(500).json(error);
