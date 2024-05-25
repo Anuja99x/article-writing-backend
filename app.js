@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const UserRoute = require('./route/userRoute');
+const UserRoute = require('./route/userRoute'); //load all routes
 const ContactMessageRoute = require('./route/contactMessageRoute');
 const topicDomainRoute = require('./route/topicDomainRoute');
 const topicRoutes = require('./route/topicRoute');
@@ -24,14 +24,16 @@ const reportedWriter = require('./route/reportedWriterRoute');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser') 
 
 const PORT = 3001;
-app.use(bodyParser.json());
+app.use(bodyParser.json()); //port that run the app
 
 var cors = require('cors');
-const flaggedTopicSchema = require("./model/flaggedTopicSchema"); //not used
-app.use(cors());
+
+const flaggedTopicSchema = require("./model/flaggedTopicSchema");
+app.use(cors()); 
+
 
 mongoose.connect(process.env.URI)
   .then(() => {
@@ -40,7 +42,6 @@ mongoose.connect(process.env.URI)
   .catch(error => {
     console.log("MongoDB connection error", error);
   });
-
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', UserRoute); //http://localhost:3001/api/user
